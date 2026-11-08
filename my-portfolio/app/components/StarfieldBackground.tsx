@@ -26,6 +26,7 @@ export default function StarfieldBackground() {
     let particles: Particle[] = [];
     let pointerX = -1000;
     let pointerY = -1000;
+    let touchTimeout = 0;
     let dotColor = "";
     let lineColor = "";
     let pointerColor = "";
@@ -38,13 +39,13 @@ export default function StarfieldBackground() {
     };
 
     const createParticles = () => {
-      const count = Math.min(52, Math.max(22, Math.round((width * height) / 26000)));
+      const count = Math.min(90, Math.max(32, Math.round((width * height) / 14000)));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.16,
-        vy: (Math.random() - 0.5) * 0.16,
-        size: 0.75 + Math.random() * 0.7,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: (Math.random() - 0.5) * 0.22,
+        size: 1.2 + Math.random() * 1,
       }));
     };
 
@@ -78,21 +79,21 @@ export default function StarfieldBackground() {
           const dx = particle.x - other.x;
           const dy = particle.y - other.y;
           const distance = Math.hypot(dx, dy);
-          if (distance > 128) continue;
+          if (distance > 150) continue;
 
           context.beginPath();
-          context.strokeStyle = `rgba(${lineColor}, ${(1 - distance / 128) * 0.15})`;
-          context.lineWidth = 0.65;
+          context.strokeStyle = `rgba(${lineColor}, ${(1 - distance / 150) * 0.3})`;
+          context.lineWidth = 0.8;
           context.moveTo(particle.x, particle.y);
           context.lineTo(other.x, other.y);
           context.stroke();
         }
 
         const pointerDistance = Math.hypot(particle.x - pointerX, particle.y - pointerY);
-        if (pointerDistance < 150) {
+        if (pointerDistance < 210) {
           context.beginPath();
-          context.strokeStyle = `rgba(${pointerColor}, ${(1 - pointerDistance / 150) * 0.18})`;
-          context.lineWidth = 0.8;
+          context.strokeStyle = `rgba(${pointerColor}, ${(1 - pointerDistance / 210) * 0.44})`;
+          context.lineWidth = 1;
           context.moveTo(particle.x, particle.y);
           context.lineTo(pointerX, pointerY);
           context.stroke();
@@ -100,7 +101,7 @@ export default function StarfieldBackground() {
 
         context.beginPath();
         context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        context.fillStyle = `rgba(${dotColor}, 0.48)`;
+        context.fillStyle = `rgba(${dotColor}, 0.82)`;
         context.fill();
       }
     };
@@ -133,9 +134,23 @@ export default function StarfieldBackground() {
       pointerY = event.clientY;
     };
 
+    const handlePointerDown = (event: PointerEvent) => {
+      if (event.pointerType !== "touch") return;
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      draw(false);
+      window.clearTimeout(touchTimeout);
+      touchTimeout = window.setTimeout(() => {
+        pointerX = -1000;
+        pointerY = -1000;
+        draw(false);
+      }, 1100);
+    };
+
     const handlePointerLeave = () => {
       pointerX = -1000;
       pointerY = -1000;
+      draw(false);
     };
 
     const handleThemeChange = () => {
@@ -148,6 +163,7 @@ export default function StarfieldBackground() {
     start();
     window.addEventListener("resize", resize, { passive: true });
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
     window.addEventListener("blur", handlePointerLeave);
     window.addEventListener("portfolio-theme-change", handleThemeChange);
     document.addEventListener("visibilitychange", updateMotion);
@@ -157,10 +173,12 @@ export default function StarfieldBackground() {
       stop();
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("blur", handlePointerLeave);
       window.removeEventListener("portfolio-theme-change", handleThemeChange);
       document.removeEventListener("visibilitychange", updateMotion);
       reducedMotion.removeEventListener("change", updateMotion);
+      window.clearTimeout(touchTimeout);
     };
   }, []);
 

@@ -1,6 +1,8 @@
 import './globals.css'
 import { MotionConfig } from 'framer-motion'
-import StarfieldBackground from './components/StarfieldBackground' 
+import AmbientExperience from './components/AmbientExperience'
+import Cursor from './components/Cursor'
+import StarfieldBackground from './components/StarfieldBackground'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import { ThemeProvider } from './components/ThemeProvider'
@@ -36,10 +38,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <MotionConfig reducedMotion="user">
             
-            {/* 1. THE BACKGROUND LAYER */}
+            <AmbientExperience />
             <StarfieldBackground />
+            <Cursor />
 
-            {/* 2. THE WEBSITE CONTENT */}
             <div className="relative z-10">
               <Navbar />
               <main>{children}</main>

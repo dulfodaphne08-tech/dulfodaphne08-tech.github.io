@@ -4,20 +4,6 @@ import { motion } from "framer-motion";
 export default function Education() {
   return (
     <section id="journey" className="relative py-24 bg-transparent overflow-hidden transition-colors duration-500">
-      
-      {/* Moving Background Pattern Animation */}
-      <div className="absolute inset-0 z-0 opacity-20 dark:opacity-10 pointer-events-none">
-        <motion.div
-           animate={{ backgroundPosition: ["0px 0px", "200px 200px"] }}
-           transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-           className="w-full h-full"
-           style={{
-             backgroundImage: `url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 100 Q 50 0 100 100 T 200 100' fill='none' stroke='%2326262A' stroke-width='1'/%3E%3C/svg%3E")`,
-             backgroundSize: "400px 400px",
-           }}
-        />
-      </div>
-
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}

@@ -40,7 +40,7 @@ export default function Contact() {
       <div className="max-w-4xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12 sm:mb-16">
           <h2 className="text-[clamp(2.5rem,9vw,4.5rem)] font-extrabold mb-6 tracking-tighter text-white">Let&apos;s Connect.</h2>
-          <p className="text-gray-400 font-medium text-lg max-w-2xl mx-auto text-center">
+          <p className="contact-description text-gray-400 font-medium text-lg max-w-2xl mx-auto text-center">
             I&apos;m currently looking for OJT and part-time opportunities where I can gain practical experience.
           </p>
         </motion.div>
