@@ -1,8 +1,7 @@
 import Hero from "./sections/Hero";
-import Stats from "./sections/Stats";
 import About from "./sections/About";
 import Services from "./sections/Services";
-import Education from "./sections/Education";
+import Education from "./sections/Education"; // <-- Make sure this is here
 import FeaturedWork from "./sections/FeaturedWork";
 import Workflow from "./sections/Workflow";
 import Skills from "./sections/Skills";
@@ -13,10 +12,10 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Stats />
+      {/* <Stats /> <-- Removed */}
       <About />
       <Services />
-      <Education />
+      <Education /> {/* <-- This is the new layout */}
       <FeaturedWork />
       <Workflow />
       <Skills />

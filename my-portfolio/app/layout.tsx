@@ -1,8 +1,6 @@
 import './globals.css'
-import { ReactLenis } from 'lenis/react'
 import { MotionConfig } from 'framer-motion'
-import AmbientExperience from './components/AmbientExperience'
-import Cursor from './components/Cursor'
+import StarfieldBackground from './components/StarfieldBackground' 
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import { ThemeProvider } from './components/ThemeProvider'
@@ -32,18 +30,22 @@ const themeInitScript = `try {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${playfair.variable} ${montserrat.variable} ${anton.variable} font-sans bg-[#f4f4f5]`}>
+    <html lang="en" suppressHydrationWarning className="bg-[#f4f4f5] dark:bg-[#0B0B0D]">
+      <body className={`${playfair.variable} ${montserrat.variable} ${anton.variable} font-sans overflow-x-hidden`}>
         <Script id="theme-init" strategy="beforeInteractive">{themeInitScript}</Script>
         <ThemeProvider>
           <MotionConfig reducedMotion="user">
-            <ReactLenis root options={{ lerp: 0.05, smoothWheel: true }}>
-              <AmbientExperience />
-              <Cursor />
+            
+            {/* 1. THE BACKGROUND LAYER */}
+            <StarfieldBackground />
+
+            {/* 2. THE WEBSITE CONTENT */}
+            <div className="relative z-10">
               <Navbar />
-              <main className="relative z-10">{children}</main>
+              <main>{children}</main>
               <Footer />
-            </ReactLenis>
+            </div>
+            
           </MotionConfig>
         </ThemeProvider>
       </body>

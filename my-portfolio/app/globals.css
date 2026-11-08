@@ -14,6 +14,9 @@
   --pointer-y: 50vh;
   --ambient-shift-x: 0px;
   --ambient-shift-y: 0px;
+  --starfield-dot-rgb: 255, 51, 102;
+  --starfield-line-rgb: 75, 75, 85;
+  --starfield-pointer-rgb: 255, 51, 102;
   color-scheme: light;
 }
 
@@ -26,6 +29,9 @@
   --foreground-muted: #c1c1c8;
   --foreground-subtle: #a0a0a9;
   --border: #34343b;
+  --starfield-dot-rgb: 255, 126, 158;
+  --starfield-line-rgb: 205, 205, 220;
+  --starfield-pointer-rgb: 255, 126, 158;
   color-scheme: dark;
 }
 
@@ -83,6 +89,25 @@ main > section:not(.hero-section) {
     background-repeat: repeat, repeat, no-repeat;
     background-position: calc(50% + var(--ambient-shift-x)) calc(50% + var(--ambient-shift-y)), calc(50% + var(--ambient-shift-x)) calc(50% + var(--ambient-shift-y)), 0 0;
   transition: background-color 450ms ease;
+}
+
+.starfield-background {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.82;
+}
+
+.starfield-background canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+:root[data-theme="dark"] .starfield-background {
+  opacity: 0.9;
 }
 
 .ambient-background {
@@ -330,8 +355,13 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   color: var(--foreground) !important;
 }
 
+:root:not([data-theme="dark"]) .hero-wordmark-copy {
+  color: rgb(17 17 20 / 16%);
+}
+
 :root[data-theme="dark"] .hero-wordmark-copy {
-  color: rgb(255 255 255 / 10%);
+  color: rgb(255 255 255 / 27%);
+  -webkit-text-stroke: 1px rgb(255 255 255 / 8%);
 }
 
 :root[data-theme="dark"] .hero-section .hero-actions a:last-child,
@@ -828,6 +858,18 @@ a:focus-visible {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+main > section:not(#contact) {
+  background-color: color-mix(in srgb, var(--background) 74%, transparent) !important;
+}
+
+main > section#contact {
+  background-color: color-mix(in srgb, #09090b 88%, transparent) !important;
+}
+
+body > div > footer {
+  background-color: color-mix(in srgb, #111114 86%, transparent) !important;
 }
 
 /* =========================================

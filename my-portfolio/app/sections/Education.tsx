@@ -3,51 +3,95 @@ import { motion } from "framer-motion";
 
 export default function Education() {
   return (
-    <section className="py-20 sm:py-24 md:py-32 px-4 sm:px-6 bg-[#f4f4f5]">
-      <div className="max-w-6xl mx-auto">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl md:text-6xl font-extrabold mb-12 md:mb-20 text-center text-black tracking-tighter">My Background</motion.h2>
-        
-        <div className="grid min-w-0 grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
-          {/* Education Column */}
-          <motion.div className="min-w-0" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h3 className="text-2xl font-black mb-8 text-black border-b-2 border-gray-300 pb-4">Education</h3>
-            <div className="space-y-8">
-              {[
-                { year: "2024 — Present", title: "Eastern Samar State University", desc: "Bachelor of Science in Information Technology (3rd Year)" },
-                { year: "Senior High School", title: "HUMSS", desc: "Grade 12 (High Honors) | Grade 11 (Honors)" },
-                { year: "Junior High School", title: "Grades 7–10", desc: "With Honors" },
-                { year: "Elementary", title: "Graduated With Honors", desc: "" },
-              ].map((edu, i) => (
-                <div key={i} className="relative pl-6 border-l-4 border-[#FF3366]">
-                  <span className="text-sm font-black text-[#FF3366] uppercase tracking-widest block mb-2">{edu.year}</span>
-                  <h4 className="text-xl font-bold text-black">{edu.title}</h4>
-                  <p className="text-gray-500 font-medium">{edu.desc}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+    <section id="journey" className="relative py-24 bg-transparent overflow-hidden transition-colors duration-500">
+      
+      {/* Moving Background Pattern Animation */}
+      <div className="absolute inset-0 z-0 opacity-20 dark:opacity-10 pointer-events-none">
+        <motion.div
+           animate={{ backgroundPosition: ["0px 0px", "200px 200px"] }}
+           transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+           className="w-full h-full"
+           style={{
+             backgroundImage: `url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 100 Q 50 0 100 100 T 200 100' fill='none' stroke='%2326262A' stroke-width='1'/%3E%3C/svg%3E")`,
+             backgroundSize: "400px 400px",
+           }}
+        />
+      </div>
 
-          {/* Achievements Column */}
-          <motion.div className="min-w-0" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h3 className="text-2xl font-black mb-8 text-black border-b-2 border-gray-300 pb-4">Achievements</h3>
-            <div className="space-y-4">
-              {[
-                { icon: "🏆", title: "Academic Excellence", sub: "With Honors (Elementary)" },
-                { icon: "🏆", title: "Consistent Honors", sub: "With Honors (Grades 7–10)" },
-                { icon: "🎓", title: "Senior High Achievement", sub: "With Honors (Grade 11)" },
-                { icon: "🎓", title: "Senior High Achievement", sub: "With High Honors (Grade 12)" },
-                { icon: "🏅", title: "Athlete of the Year", sub: "Grade 11 & Grade 12" },
-              ].map((a, i) => (
-                <div key={i} className="flex items-center gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-sm hover:border-[#FF3366] transition-colors">
-                  <div className="shrink-0 text-3xl">{a.icon}</div>
-                  <div className="min-w-0">
-                    <h4 className="font-bold text-black">{a.title}</h4>
-                    <p className="text-sm text-gray-500 font-medium">{a.sub}</p>
-                  </div>
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-black text-black dark:text-white uppercase tracking-tighter">
+            Education & Achievements
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 relative">
+          
+          {/* Vertical Divider Line for Desktop */}
+          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gray-300 dark:bg-[#26262A] -translate-x-1/2" />
+
+          {/* Left Column: Education */}
+          <div className="space-y-10">
+            <h3 className="text-2xl font-bold text-black dark:text-white mb-8">Education</h3>
+            
+            {[
+              { year: "2024 — Present", title: "Eastern Samar State University", desc: "Bachelor of Science in Information Technology · 3rd Year" },
+              { year: "Senior High School", title: "HUMSS", desc: "Grade 12 — With High Honors · Grade 11 — With Honors" },
+              { year: "Junior High School", title: "Grades 7–10", desc: "With Honors" },
+              { year: "Elementary", title: "Graduated With Honors", desc: "" },
+            ].map((item, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className="relative pl-8"
+              >
+                <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-[#f4f4f5] dark:bg-[#0B0B0D] border-2 border-[#FF3366] flex items-center justify-center z-10">
+                  <span className="text-[10px] font-bold text-black dark:text-white">{i + 1}</span>
                 </div>
-              ))}
-            </div>
-          </motion.div>
+                <div className="absolute left-[11px] top-7 bottom-[-40px] w-[2px] bg-gray-200 dark:bg-[#26262A] last:hidden" />
+                
+                <span className="inline-block px-3 py-1 bg-white dark:bg-[#171719] border border-gray-200 dark:border-[#26262A] text-xs font-bold text-gray-500 dark:text-[#85858C] rounded-full mb-2">
+                  {item.year}
+                </span>
+                <h4 className="text-xl font-bold text-black dark:text-white">{item.title}</h4>
+                <p className="text-gray-600 dark:text-[#85858C] text-sm mt-1">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Right Column: Achievements */}
+          <div className="space-y-10">
+             <h3 className="text-2xl font-bold text-black dark:text-white mb-8">Achievements</h3>
+             
+             {[
+               { title: "Athlete of the Year", desc: "Grade 11 & Grade 12", icon: "🏅" },
+               { title: "With High Honors", desc: "Grade 12", icon: "🎓" },
+               { title: "With Honors", desc: "Grade 11", icon: "🎓" },
+               { title: "With Honors", desc: "Grades 7–10", icon: "🏆" },
+               { title: "Graduated With Honors", desc: "Elementary", icon: "🏆" },
+             ].map((item, i) => (
+               <motion.div 
+                 key={i}
+                 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                 className="relative pl-8"
+               >
+                 <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-[#f4f4f5] dark:bg-[#0B0B0D] border-2 border-[#FF3366] flex items-center justify-center z-10">
+                   <span className="text-[10px] font-bold text-black dark:text-white">{i + 1}</span>
+                 </div>
+                 <div className="absolute left-[11px] top-7 bottom-[-40px] w-[2px] bg-gray-200 dark:bg-[#26262A] last:hidden" />
+
+                 <div className="flex items-center gap-3 mb-1">
+                   <span className="text-xl">{item.icon}</span>
+                   <h4 className="text-lg font-bold text-black dark:text-white">{item.title}</h4>
+                 </div>
+                 <p className="text-gray-600 dark:text-[#85858C] text-sm">{item.desc}</p>
+               </motion.div>
+             ))}
+          </div>
+
         </div>
       </div>
     </section>
