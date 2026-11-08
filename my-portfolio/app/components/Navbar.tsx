@@ -27,7 +27,7 @@ export default function Navbar() {
           </a>
           <button
             type="button"
-            className="md:hidden w-10 h-10 rounded-full border border-gray-300 bg-white/80 text-black flex items-center justify-center"
+            className="md:hidden w-11 h-11 rounded-full border border-gray-300 bg-white/80 text-black flex items-center justify-center"
             aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"

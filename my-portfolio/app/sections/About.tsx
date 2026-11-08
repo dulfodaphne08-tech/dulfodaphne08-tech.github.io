@@ -5,9 +5,9 @@ export default function About() {
   const fadeUp = { hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } };
 
   return (
-    <section id="about" className="py-32 px-6 relative bg-[#f4f4f5]">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+    <section id="about" className="py-20 sm:py-24 md:py-32 px-4 sm:px-6 relative bg-[#f4f4f5]">
+      <div className="max-w-7xl mx-auto grid min-w-0 grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
+        <motion.div className="min-w-0" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
           <h2 className="text-5xl md:text-7xl font-extrabold mb-8 text-black leading-[1.1] tracking-tighter">A little<br/>about me.</h2>
           <p className="text-xl text-gray-600 font-medium mb-6">
             I am Daphne Dulfo, a third-year Bachelor of Science in Information Technology student at Eastern Samar State University.
@@ -21,8 +21,8 @@ export default function About() {
         </motion.div>
         
         <motion.div 
-          initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-          className="bg-white p-10 md:p-14 rounded-[2.5rem] border border-gray-200 shadow-2xl flex flex-col justify-center"
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+          className="min-w-0 bg-white p-6 sm:p-10 md:p-14 rounded-[2.5rem] border border-gray-200 shadow-2xl flex flex-col justify-center"
         >
           <h3 className="text-sm font-black tracking-widest text-[#FF3366] uppercase mb-10 flex items-center gap-2">
             <span>✨</span> What I Can Bring

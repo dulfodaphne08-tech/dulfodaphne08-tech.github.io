@@ -37,7 +37,7 @@ export default function Hero() {
     <section className="min-h-screen relative pt-28 md:pt-32 flex flex-col justify-end overflow-hidden bg-[#f4f4f5]">
       
       {/* 1. GIANT BACKGROUND NAME - MOVED TO TOP & SLOWED DOWN */}
-      <div className="absolute top-[15%] left-0 w-full overflow-hidden pointer-events-none z-0 flex">
+      <div className="absolute top-[15%] left-0 hidden w-full overflow-hidden pointer-events-none z-0 md:flex">
         <motion.div 
           animate={{ x: ["0%", "-50%"] }} 
           // Changed duration from 20 to 45 to make it much slower
@@ -86,7 +86,7 @@ export default function Hero() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 w-fit mt-6 mx-auto md:mx-0">
+          <div className="flex w-full max-w-[320px] flex-col gap-3 mt-5 sm:mt-6 mx-auto md:mx-0">
             <a href="#work" className="px-6 py-3 bg-[#FF3366] text-white text-sm rounded-full shadow-lg shadow-pink-500/30 hover:scale-105 transition-transform text-center font-bold">
               View My Work →
             </a>
@@ -104,15 +104,15 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9, y: 100 }} 
             animate={{ opacity: 1, scale: 1, y: 0 }} 
             transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }} 
-            className="w-full max-w-[1000px] h-[55svh] min-h-[340px] max-h-[500px] md:h-screen md:max-h-none relative cursor-none flex items-end justify-center"
+            className="w-full max-w-[1000px] h-[40svh] min-h-[280px] max-h-[360px] md:h-screen md:max-h-none relative cursor-none flex items-end justify-center"
           >
             <img 
               src={pictureSrc}
               alt="Daphne" 
-              className="w-full h-full object-contain object-bottom grayscale drop-shadow-2xl scale-110 md:scale-125 origin-bottom" 
+              className="w-full h-full object-contain object-bottom grayscale drop-shadow-2xl md:scale-125 origin-bottom"
             />
             <motion.div 
-              className="absolute inset-0 w-full h-full z-10 pointer-events-none scale-110 md:scale-125 origin-bottom" 
+              className="absolute inset-0 w-full h-full z-10 pointer-events-none md:scale-125 origin-bottom"
               style={{ 
                 backgroundImage: `url('${pictureSrc}')`,
                 backgroundSize: "contain", 

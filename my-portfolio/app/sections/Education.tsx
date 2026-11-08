@@ -3,13 +3,13 @@ import { motion } from "framer-motion";
 
 export default function Education() {
   return (
-    <section className="py-32 px-6 bg-[#f4f4f5]">
+    <section className="py-20 sm:py-24 md:py-32 px-4 sm:px-6 bg-[#f4f4f5]">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-6xl font-extrabold mb-20 text-center text-black tracking-tighter">My Background</h2>
+        <h2 className="text-4xl md:text-6xl font-extrabold mb-12 md:mb-20 text-center text-black tracking-tighter">My Background</h2>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid min-w-0 grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
           {/* Education Column */}
-          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+          <motion.div className="min-w-0" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h3 className="text-2xl font-black mb-8 text-black border-b-2 border-gray-300 pb-4">Education</h3>
             <div className="space-y-8">
               {[
@@ -28,7 +28,7 @@ export default function Education() {
           </motion.div>
 
           {/* Achievements Column */}
-          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+          <motion.div className="min-w-0" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h3 className="text-2xl font-black mb-8 text-black border-b-2 border-gray-300 pb-4">Achievements</h3>
             <div className="space-y-4">
               {[
@@ -38,9 +38,9 @@ export default function Education() {
                 { icon: "🎓", title: "Senior High Achievement", sub: "With High Honors (Grade 12)" },
                 { icon: "🏅", title: "Athlete of the Year", sub: "Grade 11 & Grade 12" },
               ].map((a, i) => (
-                <div key={i} className="flex items-center gap-5 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:border-[#FF3366] transition-colors">
-                  <div className="text-3xl">{a.icon}</div>
-                  <div>
+                <div key={i} className="flex items-center gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-sm hover:border-[#FF3366] transition-colors">
+                  <div className="shrink-0 text-3xl">{a.icon}</div>
+                  <div className="min-w-0">
                     <h4 className="font-bold text-black">{a.title}</h4>
                     <p className="text-sm text-gray-500 font-medium">{a.sub}</p>
                   </div>
