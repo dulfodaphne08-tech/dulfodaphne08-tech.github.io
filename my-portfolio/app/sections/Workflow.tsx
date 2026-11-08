@@ -12,19 +12,19 @@ const steps = [
 
 export default function Workflow() {
   return (
-    <section className="py-32 px-6 bg-white border-y border-gray-200">
+    <section id="journey" className="py-20 sm:py-24 md:py-32 px-4 sm:px-6 bg-white border-y border-gray-200">
       <div className="max-w-6xl mx-auto">
         
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 sm:mb-16 md:mb-20">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-5xl md:text-7xl mb-6 text-black"
+            className="text-4xl sm:text-5xl md:text-7xl mb-6 text-black"
           >
             How I Approach a Project
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            className="text-gray-500 font-medium text-xl text-center"
+            className="text-gray-500 font-medium text-base sm:text-lg md:text-xl text-center"
           >
             My step-by-step development process from initial idea to final deployment.
           </motion.p>
@@ -38,7 +38,7 @@ export default function Workflow() {
               whileInView={{ opacity: 1, y: 0 }} 
               viewport={{ once: true }} 
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="bg-[#f4f4f5] p-8 md:p-10 rounded-[2rem] border border-gray-200 relative overflow-hidden group hover:bg-white hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+              className="bg-[#f4f4f5] p-6 sm:p-8 md:p-10 rounded-[2rem] border border-gray-200 relative overflow-hidden group hover:bg-white hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
             >
               {/* Giant Number - Tucked away in the corner */}
               <span className="text-[120px] font-black text-black/[0.04] absolute -top-4 -right-4 group-hover:text-[#FF3366]/[0.05] transition-colors duration-500 pointer-events-none leading-none select-none">

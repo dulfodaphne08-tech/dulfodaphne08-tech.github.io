@@ -11,10 +11,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-montserrat), sans-serif;
   overflow-x: hidden;
-  cursor: none;
 }
-
-a, button { cursor: none; }
 
 /* Custom Cursor */
 .cursor {
@@ -33,6 +30,14 @@ a, button { cursor: none; }
   height: 60px;
   background-color: rgba(255, 51, 102, 0.2);
   border: 1px solid var(--accent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body, a, button { cursor: none; }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor { display: none; }
 }
 
 ::-webkit-scrollbar { display: none; }

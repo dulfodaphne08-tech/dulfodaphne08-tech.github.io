@@ -1,8 +1,6 @@
 import type { NextConfig } from "next";
 
-const basePath = process.env.GITHUB_ACTIONS
-  ? "/daphnedulfo.github.io"
-  : "";
+const basePath = "";
 
 const nextConfig: NextConfig = {
   basePath,

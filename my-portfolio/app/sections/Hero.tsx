@@ -34,7 +34,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="min-h-screen relative pt-32 flex flex-col justify-end overflow-hidden bg-[#f4f4f5]">
+    <section className="min-h-screen relative pt-28 md:pt-32 flex flex-col justify-end overflow-hidden bg-[#f4f4f5]">
       
       {/* 1. GIANT BACKGROUND NAME - MOVED TO TOP & SLOWED DOWN */}
       <div className="absolute top-[15%] left-0 w-full overflow-hidden pointer-events-none z-0 flex">
@@ -53,10 +53,10 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      <div className="max-w-[1600px] mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-4 relative z-10 items-end px-6">
+      <div className="max-w-[1600px] mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 relative z-10 items-end px-4 sm:px-6">
         
         {/* 2. LEFT TEXT - FIXED CENTERED FONTS */}
-        <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="md:col-span-3 pb-24 z-30">
+        <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="md:col-span-3 pb-2 md:pb-24 z-30">
           
           <div className="bg-white/95 backdrop-blur-md p-6 rounded-3xl border border-gray-200 shadow-xl text-center">
             
@@ -104,7 +104,7 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9, y: 100 }} 
             animate={{ opacity: 1, scale: 1, y: 0 }} 
             transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }} 
-            className="w-full max-w-[1000px] h-[600px] md:h-[100vh] relative cursor-none flex items-end justify-center"
+            className="w-full max-w-[1000px] h-[55svh] min-h-[340px] max-h-[500px] md:h-screen md:max-h-none relative cursor-none flex items-end justify-center"
           >
             <img 
               src={pictureSrc}
@@ -126,7 +126,7 @@ export default function Hero() {
         </div>
 
         {/* 4. RIGHT INFO */}
-        <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.8 }} className="md:col-span-3 pb-24 flex justify-end z-30">
+        <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.8 }} className="md:col-span-3 pb-8 md:pb-24 flex justify-center md:justify-end z-30">
           <div className="bg-white/90 backdrop-blur-md p-4 rounded-2xl border border-gray-300 shadow-2xl w-full max-w-[200px]">
             <p className="text-[10px] font-bold text-[#FF3366] mb-3 uppercase tracking-widest text-left">Connect with me</p>
             <div className="flex flex-col gap-2">
