@@ -16,9 +16,9 @@ export default function Stats() {
           <motion.div 
             key={i} 
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-            className="min-w-0 p-4 sm:p-6 md:p-10 text-center hover:bg-[#f4f4f5] transition-colors group cursor-default"
+            className="min-w-0 p-4 sm:p-6 md:p-6 lg:p-10 text-center hover:bg-[#f4f4f5] transition-colors group cursor-default"
           >
-            <h3 className="text-lg sm:text-2xl md:text-3xl font-black mb-2 text-black group-hover:text-[#FF3366] transition-colors">{stat.value}</h3>
+            <h3 className="break-words text-base leading-tight sm:text-2xl md:text-xl lg:text-3xl font-black mb-2 text-black group-hover:text-[#FF3366] transition-colors">{stat.value}</h3>
             <p className="text-[10px] sm:text-xs md:text-sm font-bold tracking-widest text-gray-500 uppercase">{stat.label}</p>
           </motion.div>
         ))}

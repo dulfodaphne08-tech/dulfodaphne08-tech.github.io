@@ -45,18 +45,18 @@ export default function FeaturedWork() {
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
 
   return (
-    <section id="work" className="pt-40 pb-32 bg-[#f4f4f5] border-y border-gray-200">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="work" className="pt-24 sm:pt-28 md:pt-40 pb-20 md:pb-32 bg-[#f4f4f5] border-y border-gray-200">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
-        <div className="text-center mb-24 max-w-3xl mx-auto">
+        <div className="text-center mb-12 sm:mb-16 md:mb-24 max-w-3xl mx-auto">
           {/* THIS USES THE NEW ANTON FONT */}
-          <h2 className="text-5xl md:text-7xl mb-6 text-black">Selected Work</h2>
+          <h2 className="text-[clamp(2.25rem,8vw,4.5rem)] mb-6 text-black">Selected Work</h2>
           <p className="text-gray-500 font-medium text-xl text-center">
             A showcase of the systems I have built throughout my academic journey.
           </p>
         </div>
 
-        <div className="space-y-32">
+        <div className="space-y-20 md:space-y-32">
           {projects.map((project, index) => (
             <motion.div 
               key={project.id}
@@ -75,15 +75,15 @@ export default function FeaturedWork() {
                   <span className="text-gray-500 text-sm font-bold tracking-widest uppercase">{project.role}</span>
                 </div>
                 
-                <h3 className="text-4xl md:text-5xl font-normal mb-8 text-black tracking-tight text-balance">
+                <h3 className="text-3xl sm:text-4xl md:text-5xl font-normal mb-6 md:mb-8 text-black tracking-tight text-balance">
                   {project.title}
                 </h3>
                 
-                <p className="text-gray-600 leading-relaxed font-medium text-lg mb-10 text-justify">
+                <p className="text-gray-600 leading-relaxed font-medium text-base sm:text-lg mb-6 md:mb-10">
                   {project.desc}
                 </p>
 
-                <div className="flex flex-wrap gap-2 mb-10">
+                <div className="flex flex-wrap gap-2 mb-6 md:mb-10">
                   {project.tech.map(t => (
                     <span key={t} className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-black shadow-sm">
                       {t}
@@ -93,7 +93,7 @@ export default function FeaturedWork() {
 
                 <button 
                   onClick={() => setSelectedProject(project)}
-                  className="px-10 py-5 bg-black text-white font-bold text-lg rounded-full hover:bg-[#FF3366] transition-all shadow-xl hover:-translate-y-1 w-full md:w-auto text-center"
+                  className="min-h-12 px-8 py-3 md:px-10 md:py-5 bg-black text-white font-bold text-base md:text-lg rounded-full hover:bg-[#FF3366] transition-all shadow-xl hover:-translate-y-1 w-full md:w-auto text-center"
                 >
                   View Project Details →
                 </button>

@@ -22,7 +22,7 @@ export default function Navbar() {
           <a href="#contact" className="hover:text-[#FF3366] transition-colors px-2">Contact</a>
         </div>
         <div className="flex items-center gap-2">
-          <a href="#contact" className="px-4 sm:px-6 py-2.5 bg-black text-white text-xs sm:text-sm font-bold rounded-full hover:scale-105 transition-transform shadow-lg whitespace-nowrap">
+          <a href="#contact" className="hidden min-[375px]:inline-flex px-4 sm:px-6 py-2.5 bg-black text-white text-xs sm:text-sm font-bold rounded-full hover:scale-105 transition-transform shadow-lg whitespace-nowrap">
             Let&apos;s Talk ↗
           </a>
           <button

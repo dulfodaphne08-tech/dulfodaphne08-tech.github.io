@@ -51,47 +51,46 @@ export default function Hero() {
   }
 
   return (
-    <section className="min-h-screen relative pt-28 md:pt-32 flex flex-col justify-end overflow-hidden bg-[#f4f4f5]">
-      
-      <div aria-hidden="true" className="absolute top-[25%] md:top-[15%] left-0 flex w-full overflow-hidden pointer-events-none z-0">
-        <motion.div 
-          animate={{ x: ["0%", "-50%"] }} 
+    <section className="hero-section min-h-[100svh] relative flex flex-col justify-center overflow-hidden bg-[#f4f4f5] py-28 md:py-32">
+      <div aria-hidden="true" className="pointer-events-none absolute left-0 top-1/2 z-0 flex w-full -translate-y-1/2 overflow-hidden">
+        <motion.div
+          animate={{ x: ["0%", "-50%"] }}
           transition={{ repeat: Infinity, duration: 45, ease: "linear" }}
-          className="whitespace-nowrap flex"
+          className="flex whitespace-nowrap"
         >
-          <h1 className="text-[7vw] md:text-[22vw] leading-none text-black/70 md:text-black uppercase tracking-tighter drop-shadow-lg" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontWeight: 400 }}>
-            DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp;
-          </h1>
-          <h1 className="text-[7vw] md:text-[22vw] leading-none text-black/70 md:text-black uppercase tracking-tighter drop-shadow-lg" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontWeight: 400 }}>
-            DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp;
-          </h1>
+          {[0, 1].map((copy) => (
+            <h1
+              key={copy}
+              className="text-[clamp(3.5rem,16vw,8rem)] leading-none uppercase tracking-tighter text-black/70 drop-shadow-lg md:text-[clamp(5rem,15vw,12rem)] md:text-black xl:text-[22vw]"
+              style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontWeight: 400 }}
+            >
+              DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp;
+            </h1>
+          ))}
         </motion.div>
       </div>
-
-      <div className="max-w-[1600px] mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 relative z-10 items-end px-4 sm:px-6">
-        
-        {/* 2. LEFT TEXT - FIXED CENTERED FONTS */}
-        <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="md:col-span-3 pb-2 md:pb-24 z-30">
-          
-          <div className="bg-white/95 backdrop-blur-md p-6 rounded-3xl border border-gray-200 shadow-xl text-center">
-            
-            {/* CREATIVE HEADER - Italic, Bold, No Shadow */}
-            <h2 
-              className="text-2xl md:text-3xl mb-2 text-black leading-tight" 
-              style={{ 
-                fontFamily: "var(--font-playfair), serif", 
+      <div className="hero-layout relative z-10 mx-auto w-full max-w-[1600px] px-4 sm:px-6">
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="hero-intro z-30"
+        >
+          <div className="rounded-3xl border border-gray-200 bg-white/95 p-5 text-center shadow-xl backdrop-blur-md sm:p-6">
+            <h2
+              className="mb-2 text-2xl leading-tight text-black sm:text-3xl"
+              style={{
+                fontFamily: "var(--font-playfair), serif",
                 fontStyle: "italic",
                 fontWeight: 900
               }}
             >
-              3rd Year <br/> BSIT Student
+              3rd Year <br /> BSIT Student
             </h2>
-            
-            {/* BEAUTIFUL WORDINGS - Italic, Elegant */}
-            <p 
-              className="text-gray-800 mb-0 text-sm md:text-base" 
-              style={{ 
-                fontFamily: "var(--font-playfair), serif", 
+            <p
+              className="mb-0 text-sm text-gray-800 sm:text-base"
+              style={{
+                fontFamily: "var(--font-playfair), serif",
                 fontStyle: "italic",
                 fontWeight: 500,
                 letterSpacing: "0.05em"
@@ -100,21 +99,11 @@ export default function Hero() {
               Aspiring IT Professional
             </p>
           </div>
-
-          <div className="flex w-full max-w-[320px] flex-col gap-3 mt-5 sm:mt-6 mx-auto md:mx-0">
-            <a href="#work" className="px-6 py-3 bg-[#FF3366] text-white text-sm rounded-full shadow-lg shadow-pink-500/30 hover:scale-105 transition-transform text-center font-bold">
-              View My Work →
-            </a>
-            <a href="#contact" className="px-6 py-3 bg-black text-white text-sm rounded-full shadow-lg hover:scale-105 transition-transform text-center font-bold">
-              Contact Me
-            </a>
-          </div>
         </motion.div>
 
-        {/* 3. MASSIVE CENTER IMAGE */}
-        <div className="md:col-span-6 flex justify-center h-full z-10 relative">
-          <motion.div 
-            ref={containerRef} 
+        <div className="hero-portrait relative z-10 flex min-w-0 justify-center">
+          <motion.div
+            ref={containerRef}
             onPointerMove={handlePointerMove}
             onPointerDown={handlePointerDown}
             onPointerUp={handlePointerUp}
@@ -122,40 +111,58 @@ export default function Hero() {
             onPointerLeave={(e) => {
               if (e.pointerType === "mouse") setColorActive(false);
             }}
-            initial={{ opacity: 0, scale: 0.9, y: 100 }} 
-            animate={{ opacity: 1, scale: 1, y: 0 }} 
-            transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }} 
-            className="w-full max-w-[1000px] h-[40svh] min-h-[280px] max-h-[360px] md:h-screen md:max-h-none relative cursor-none flex items-end justify-center touch-pan-y"
+            initial={{ opacity: 0, scale: 0.9, y: 100 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="relative flex w-[min(82vw,420px)] max-w-full items-center justify-center touch-pan-y xl:w-full xl:max-w-[900px]"
           >
-            <img 
+            <img
               src={pictureSrc}
-              alt="Daphne" 
-              className="w-full h-full object-contain object-bottom grayscale drop-shadow-2xl md:scale-125 origin-bottom"
+              alt="Daphne"
+              className="relative z-10 block h-auto w-full grayscale drop-shadow-2xl xl:scale-110"
             />
-            <motion.div 
-              className="absolute inset-0 w-full h-full z-10 pointer-events-none md:scale-125 origin-bottom"
+            <motion.div
+              className="pointer-events-none absolute inset-0 z-20 xl:scale-110"
               animate={{ opacity: colorActive ? 1 : 0 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
-              style={{ 
+              style={{
                 backgroundImage: `url('${pictureSrc}')`,
-                backgroundSize: "contain", 
-                backgroundPosition: "bottom center", 
-                backgroundRepeat: "no-repeat", 
-                maskImage, 
-                WebkitMaskImage: maskImage 
-              }} 
+                backgroundSize: "contain",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                maskImage,
+                WebkitMaskImage: maskImage
+              }}
             />
           </motion.div>
         </div>
 
-        {/* 4. RIGHT INFO */}
-        <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.8 }} className="md:col-span-3 pb-8 md:pb-24 flex justify-center md:justify-end z-30">
-          <div className="bg-white/90 backdrop-blur-md p-4 rounded-2xl border border-gray-300 shadow-2xl w-full max-w-[200px]">
-            <p className="text-[10px] font-bold text-[#FF3366] mb-3 uppercase tracking-widest text-left">Connect with me</p>
-            <div className="flex flex-col gap-2">
-              <a href="mailto:dulfodaphne08@gmail.com" className="text-[11px] font-bold hover:text-[#FF3366] transition-colors flex items-center gap-2">📧 Email</a>
-              <a href="https://github.com/dulfodaphne08-tech" target="_blank" rel="noreferrer" className="text-[11px] font-bold hover:text-[#FF3366] transition-colors flex items-center gap-2">💻 GitHub</a>
-              <a href="https://www.facebook.com/share/19c8UTaNGX/" target="_blank" rel="noreferrer" className="text-[11px] font-bold hover:text-[#FF3366] transition-colors flex items-center gap-2">📘 Facebook</a>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="hero-actions mx-auto flex w-full max-w-[360px] flex-col gap-3"
+        >
+          <a href="#work" className="min-h-12 rounded-full bg-[#FF3366] px-6 py-3 text-center text-sm font-bold text-white shadow-lg shadow-pink-500/30 transition-transform hover:scale-105">
+            View My Work →
+          </a>
+          <a href="#contact" className="min-h-12 rounded-full bg-black px-6 py-3 text-center text-sm font-bold text-white shadow-lg transition-transform hover:scale-105">
+            Contact Me
+          </a>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="hero-social z-30 w-full"
+        >
+          <div className="mx-auto w-full max-w-[360px] rounded-2xl border border-gray-300 bg-white/90 p-4 shadow-2xl backdrop-blur-md xl:max-w-[240px]">
+            <p className="mb-3 text-left text-[10px] font-bold uppercase tracking-widest text-[#FF3366]">Connect with me</p>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 md:flex-col md:gap-2">
+              <a href="mailto:dulfodaphne08@gmail.com" className="flex items-center gap-2 text-xs font-bold transition-colors hover:text-[#FF3366]">📧 Email</a>
+              <a href="https://github.com/dulfodaphne08-tech" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs font-bold transition-colors hover:text-[#FF3366]">💻 GitHub</a>
+              <a href="https://www.facebook.com/share/19c8UTaNGX/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs font-bold transition-colors hover:text-[#FF3366]">📘 Facebook</a>
             </div>
           </div>
         </motion.div>

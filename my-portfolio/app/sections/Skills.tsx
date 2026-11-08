@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-32 px-6 bg-[#f4f4f5]">
+    <section id="skills" className="py-20 sm:py-24 md:py-32 px-4 sm:px-6 bg-[#f4f4f5]">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-6xl font-extrabold mb-16 text-center text-black tracking-tighter">Technical Skills</h2>
+        <h2 className="text-4xl md:text-6xl font-extrabold mb-12 md:mb-16 text-center text-black tracking-tighter">Technical Skills</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white p-8 rounded-[2rem] border border-gray-200 shadow-sm hover:shadow-xl transition-shadow">
