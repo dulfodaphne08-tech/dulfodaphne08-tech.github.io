@@ -64,25 +64,25 @@ export default function Hero() {
   }
 
   return (
-    <section className="hero-section min-h-[100svh] relative flex flex-col justify-center overflow-hidden bg-[#f4f4f5] py-28 md:py-32">
-      <div aria-hidden="true" className="pointer-events-none absolute left-0 top-1/2 z-0 flex w-full -translate-y-1/2 overflow-hidden">
+    <section className="hero-section relative isolate min-h-[100svh] overflow-x-clip bg-[#f4f4f5] px-4 pb-10 pt-28 sm:px-6 sm:pb-12 sm:pt-32">
+      <div aria-hidden="true" className="hero-wordmark pointer-events-none absolute inset-x-0 z-[1] overflow-hidden">
         <motion.div
           animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, duration: 45, ease: "linear" }}
-          className="flex whitespace-nowrap"
+          transition={{ repeat: Infinity, duration: 70, ease: "linear" }}
+          className="hero-wordmark-track flex w-max whitespace-nowrap"
         >
           {[0, 1].map((copy) => (
             <h1
               key={copy}
-              className="text-[clamp(3.5rem,16vw,8rem)] leading-none uppercase tracking-tighter text-black/70 drop-shadow-lg md:text-[clamp(5rem,15vw,12rem)] md:text-black xl:text-[22vw]"
+              className="hero-wordmark-copy text-[clamp(4.5rem,14vw,13rem)] leading-none tracking-tighter text-black/[0.10]"
               style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontWeight: 400 }}
             >
-              DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp;
+              DAPHNE. &nbsp;&nbsp; DAPHNE. &nbsp;&nbsp; DAPHNE. &nbsp;&nbsp;
             </h1>
           ))}
         </motion.div>
       </div>
-      <div className="hero-layout relative z-10 mx-auto w-full max-w-[1600px] px-4 sm:px-6">
+      <div className="hero-layout relative z-10 mx-auto w-full max-w-[1500px]">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -127,16 +127,16 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9, y: 100 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="relative flex w-[min(82vw,420px)] max-w-full items-center justify-center touch-pan-y xl:w-full xl:max-w-[900px]"
+            className="hero-portrait-frame relative flex w-[min(82vw,420px)] max-w-full items-center justify-center touch-pan-y"
           >
             <img
               src={pictureSrc}
               alt="Daphne"
-              className="relative z-10 block h-auto w-full grayscale drop-shadow-2xl xl:scale-110"
+              className="relative z-10 block h-auto w-full object-contain grayscale drop-shadow-2xl"
             />
             <motion.div
               data-color-reveal
-              className="pointer-events-none absolute inset-0 z-20 xl:scale-110"
+              className="pointer-events-none absolute inset-0 z-20"
               animate={{ opacity: colorActive ? 1 : 0 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
               style={{
@@ -155,7 +155,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="hero-actions mx-auto flex w-full max-w-[360px] flex-col gap-3"
+          className="hero-actions flex w-full max-w-[360px] flex-col gap-3"
         >
           <a href="#work" data-magnetic className="min-h-12 rounded-full bg-[#FF3366] px-6 py-3 text-center text-sm font-bold text-white shadow-lg shadow-pink-500/30 transition-transform hover:scale-105">
             View My Work →

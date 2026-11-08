@@ -1,6 +1,5 @@
 import Hero from "./sections/Hero";
 import Stats from "./sections/Stats";
-import Marquee from "./sections/Marquee";
 import About from "./sections/About";
 import Services from "./sections/Services";
 import Education from "./sections/Education";
@@ -15,7 +14,6 @@ export default function Home() {
     <>
       <Hero />
       <Stats />
-      <Marquee />
       <About />
       <Services />
       <Education />

@@ -384,6 +384,28 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   color: #92929c;
 }
 
+.hero-section {
+  display: flex;
+  align-items: center;
+  padding-top: max(7.5rem, calc(env(safe-area-inset-top) + 6.5rem));
+}
+
+.hero-wordmark {
+  top: 35%;
+  z-index: 1;
+  line-height: 0.8;
+}
+
+.hero-wordmark-track {
+  will-change: transform;
+}
+
+.hero-wordmark-copy {
+  flex: none;
+  margin: 0;
+  font-family: var(--font-anton), Impact, sans-serif;
+}
+
 .hero-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -393,23 +415,50 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
     "actions"
     "social";
   align-items: center;
-  gap: 0.75rem;
+  justify-items: center;
+  gap: 1.25rem;
 }
 
-.hero-intro { grid-area: intro; }
-.hero-portrait { grid-area: portrait; }
-.hero-actions { grid-area: actions; }
-.hero-social { grid-area: social; }
+.hero-intro {
+  grid-area: intro;
+  z-index: 3;
+  width: min(100%, 22rem);
+}
 
-.hero-portrait img,
-.hero-portrait [data-color-reveal] {
-  translate: calc(var(--ambient-shift-x) * 0.14) calc(var(--ambient-shift-y) * 0.14);
+.hero-portrait {
+  grid-area: portrait;
+  z-index: 2;
+  width: 100%;
+  min-width: 0;
+  justify-self: center;
+}
+
+.hero-portrait-frame {
+  width: min(82vw, 420px);
+}
+
+.hero-portrait-frame img,
+.hero-portrait-frame [data-color-reveal] {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  translate: calc(var(--ambient-shift-x) * 0.08) calc(var(--ambient-shift-y) * 0.08);
   transition: translate 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.hero-section > [aria-hidden="true"] {
-  translate: calc(var(--ambient-shift-x) * 0.3) calc(var(--ambient-shift-y) * 0.2);
-  transition: translate 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+.hero-actions {
+  grid-area: actions;
+  z-index: 3;
+}
+
+.hero-social {
+  grid-area: social;
+  z-index: 3;
+}
+
+.hero-section + section {
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .project-row,
@@ -439,36 +488,67 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
-  .hero-section {
-    min-height: 0;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1279px) {
+@media (min-width: 768px) and (max-width: 1099px) {
   .hero-layout {
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     grid-template-areas:
       "intro portrait"
       "actions portrait"
       "social social";
     column-gap: clamp(1.5rem, 4vw, 3rem);
-    row-gap: 1rem;
+    row-gap: 1.25rem;
+  }
+
+  .hero-section {
+    padding-top: 8.5rem;
+  }
+
+  .hero-wordmark {
+    top: 25%;
+  }
+
+  .hero-portrait-frame {
+    width: clamp(20rem, 42vw, 29rem);
+  }
+
+  .hero-social > div {
+    max-width: 26rem;
+  }
+
+  .hero-section + section {
+    margin-top: 2rem;
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1100px) {
   .hero-layout {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr) minmax(0, 0.9fr);
+    grid-template-columns: minmax(13rem, 0.8fr) minmax(0, 1.8fr) minmax(13rem, 0.8fr);
     grid-template-areas:
       "intro portrait social"
       "actions portrait social";
-    gap: clamp(1rem, 2vw, 2rem);
+    gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  }
+
+  .hero-section {
+    padding-top: 8.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .hero-wordmark {
+    top: 22%;
+  }
+
+  .hero-portrait-frame {
+    width: clamp(34rem, 42vw, 42rem);
   }
 
   .hero-social {
     align-self: end;
     justify-self: end;
+  }
+
+  .hero-section + section {
+    margin-top: 2.5rem;
   }
 }
 
@@ -511,6 +591,7 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
 ::-webkit-scrollbar { display: none; }
 
 .nav-shell {
+  min-width: 0;
   border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
   background-color: color-mix(in srgb, var(--surface) 77%, transparent);
   box-shadow: 0 12px 36px rgb(17 17 17 / 7%);
@@ -525,6 +606,7 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
 }
 
 .nav-brand {
+  flex: none;
   color: var(--foreground);
   text-decoration: none;
 }
