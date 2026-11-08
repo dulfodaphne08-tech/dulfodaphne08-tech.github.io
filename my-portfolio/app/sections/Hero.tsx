@@ -65,24 +65,23 @@ export default function Hero() {
 
   return (
     <section className="hero-section relative isolate min-h-[100svh] overflow-x-clip bg-[#f4f4f5] px-4 pb-10 pt-28 sm:px-6 sm:pb-12 sm:pt-32">
-      <div aria-hidden="true" className="hero-wordmark pointer-events-none absolute inset-x-0 z-[1] overflow-hidden">
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, duration: 70, ease: "linear" }}
-          className="hero-wordmark-track flex w-max whitespace-nowrap"
-        >
-          {[0, 1].map((copy) => (
-            <h1
-              key={copy}
-              className="hero-wordmark-copy text-[clamp(4.5rem,14vw,13rem)] leading-none tracking-tighter text-black/[0.10]"
-              style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontWeight: 400 }}
-            >
-              DAPHNE. &nbsp;&nbsp; DAPHNE. &nbsp;&nbsp; DAPHNE. &nbsp;&nbsp;
-            </h1>
-          ))}
-        </motion.div>
-      </div>
       <div className="hero-layout relative z-10 mx-auto w-full max-w-[1500px]">
+        <div aria-hidden="true" className="hero-wordmark pointer-events-none overflow-hidden">
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ repeat: Infinity, duration: 90, ease: "linear" }}
+            className="hero-wordmark-track flex w-max whitespace-nowrap"
+          >
+            {[0, 1].map((copy) => (
+              <span
+                key={copy}
+                className="hero-wordmark-copy text-[clamp(3.5rem,9vw,10rem)] leading-none tracking-tighter text-black/[0.10]"
+              >
+                DAPHNE. &nbsp;&nbsp; DAPHNE. &nbsp;&nbsp; DAPHNE. &nbsp;&nbsp;
+              </span>
+            ))}
+          </motion.div>
+        </div>
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -127,12 +126,13 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9, y: 100 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            data-color-active={colorActive}
             className="hero-portrait-frame relative flex w-[min(82vw,420px)] max-w-full items-center justify-center touch-pan-y"
           >
             <img
               src={pictureSrc}
               alt="Daphne"
-              className="relative z-10 block h-auto w-full object-contain grayscale drop-shadow-2xl"
+              className="hero-portrait-image relative z-10 block h-auto w-full object-contain grayscale drop-shadow-2xl"
             />
             <motion.div
               data-color-reveal

@@ -330,8 +330,8 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   color: var(--foreground) !important;
 }
 
-:root[data-theme="dark"] .hero-section [aria-hidden="true"] h1 {
-  color: rgb(255 255 255 / 14%);
+:root[data-theme="dark"] .hero-wordmark-copy {
+  color: rgb(255 255 255 / 10%);
 }
 
 :root[data-theme="dark"] .hero-section .hero-actions a:last-child,
@@ -387,12 +387,15 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
 .hero-section {
   display: flex;
   align-items: center;
+  min-height: 95svh;
   padding-top: max(7.5rem, calc(env(safe-area-inset-top) + 6.5rem));
 }
 
 .hero-wordmark {
-  top: 35%;
+  grid-area: wordmark;
+  position: relative;
   z-index: 1;
+  width: 100%;
   line-height: 0.8;
 }
 
@@ -403,6 +406,7 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
 .hero-wordmark-copy {
   flex: none;
   margin: 0;
+  color: color-mix(in srgb, var(--foreground) 10%, transparent);
   font-family: var(--font-anton), Impact, sans-serif;
 }
 
@@ -411,12 +415,13 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
     "intro"
+    "wordmark"
     "portrait"
     "actions"
     "social";
   align-items: center;
   justify-items: center;
-  gap: 1.25rem;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
 }
 
 .hero-intro {
@@ -445,6 +450,21 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   object-fit: contain;
   translate: calc(var(--ambient-shift-x) * 0.08) calc(var(--ambient-shift-y) * 0.08);
   transition: translate 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hero-portrait-image {
+  filter: grayscale(1) brightness(0.98) drop-shadow(0 1.25rem 1.25rem rgb(17 17 17 / 12%));
+  transition:
+    filter 450ms ease,
+    translate 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hero-portrait-frame[data-color-active="true"] .hero-portrait-image {
+  filter:
+    grayscale(0)
+    brightness(1.04)
+    contrast(1.03)
+    drop-shadow(0 1.5rem 1.75rem color-mix(in srgb, var(--accent) 18%, transparent));
 }
 
 .hero-actions {
@@ -492,6 +512,7 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   .hero-layout {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     grid-template-areas:
+      "wordmark wordmark"
       "intro portrait"
       "actions portrait"
       "social social";
@@ -503,8 +524,8 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
     padding-top: 8.5rem;
   }
 
-  .hero-wordmark {
-    top: 25%;
+  .hero-wordmark-copy {
+    font-size: clamp(5rem, 10vw, 7rem);
   }
 
   .hero-portrait-frame {
@@ -524,6 +545,7 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   .hero-layout {
     grid-template-columns: minmax(13rem, 0.8fr) minmax(0, 1.8fr) minmax(13rem, 0.8fr);
     grid-template-areas:
+      "wordmark wordmark wordmark"
       "intro portrait social"
       "actions portrait social";
     gap: clamp(1.25rem, 2.5vw, 2.5rem);
@@ -534,12 +556,22 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
     padding-bottom: 4rem;
   }
 
-  .hero-wordmark {
-    top: 22%;
+  .hero-wordmark-copy {
+    font-size: clamp(7rem, 9vw, 10rem);
   }
 
   .hero-portrait-frame {
     width: clamp(34rem, 42vw, 42rem);
+  }
+
+  @media (max-width: 767px) {
+    .hero-section {
+      min-height: 0;
+    }
+
+    .hero-wordmark-copy {
+      font-size: clamp(3rem, 11vw, 4.5rem);
+    }
   }
 
   .hero-social {

@@ -33,9 +33,7 @@ export default function Navbar() {
   return (
     <nav className="fixed inset-x-0 top-[max(0.75rem,env(safe-area-inset-top))] z-50 box-border w-full px-3 sm:px-5" aria-label="Main navigation">
       <div className={`nav-shell mx-auto box-border flex w-full max-w-[1120px] min-w-0 items-center justify-between gap-2 rounded-full px-3 py-2.5 sm:gap-3 sm:px-5 ${scrolled ? "nav-shell--scrolled" : ""}`}>
-        <a href="#" className="nav-brand shrink-0 text-xl font-black tracking-tighter sm:text-2xl">
-          DAPHNE.
-        </a>
+        <a href="#" aria-label="Home" className="nav-brand size-10 shrink-0" />
 
         <div className="nav-links hidden min-[1100px]:flex items-center gap-0.5">
           {links.map(([label, href]) => (
