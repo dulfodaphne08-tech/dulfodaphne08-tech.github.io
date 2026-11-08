@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-black text-white py-16 px-6 border-t border-gray-800">
+    <footer className="relative z-10 bg-black text-white py-16 px-6 border-t border-gray-800">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         <div className="md:col-span-2">
           <h2 className="text-4xl font-black mb-4 tracking-tighter" style={{ fontFamily: 'Anton, sans-serif' }}>DAPHNE.</h2>

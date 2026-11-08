@@ -6,6 +6,8 @@ export default function Hero() {
   const [loading, setLoading] = useState(true);
   const pictureSrc = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/picture.png`;
   const containerRef = useRef<HTMLDivElement>(null);
+  const touchTimer = useRef<number | null>(null);
+  const colorActiveRef = useRef(false);
   const [colorActive, setColorActive] = useState(false);
   const pointerX = useSpring(0, { stiffness: 180, damping: 24 });
   const pointerY = useSpring(0, { stiffness: 180, damping: 24 });
@@ -13,30 +15,41 @@ export default function Hero() {
 
   const maskImage = useMotionTemplate`radial-gradient(circle ${revealSize}px at ${pointerX}px ${pointerY}px, black 0%, black 65%, transparent 100%)`;
 
+  const setColorReveal = (active: boolean) => {
+    if (colorActiveRef.current === active) return;
+    colorActiveRef.current = active;
+    setColorActive(active);
+  };
+
   const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     pointerX.set(e.clientX - rect.left);
     pointerY.set(e.clientY - rect.top);
     revealSize.set(e.pointerType === "touch" ? 90 : 250);
-    if (e.pointerType === "mouse") setColorActive(true);
+    if (e.pointerType === "mouse") setColorReveal(true);
   };
 
   const handlePointerDown = (e: PointerEvent<HTMLDivElement>) => {
     if (e.pointerType === "touch") {
       handlePointerMove(e);
-      setColorActive(true);
+      setColorReveal(true);
     }
   };
 
   const handlePointerUp = (e: PointerEvent<HTMLDivElement>) => {
     if (e.pointerType === "touch") {
-      window.setTimeout(() => setColorActive(false), 450);
+      if (touchTimer.current !== null) window.clearTimeout(touchTimer.current);
+      touchTimer.current = window.setTimeout(() => setColorReveal(false), 650);
     }
   };
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1200);
+    const timer = window.setTimeout(() => setLoading(false), 1200);
+    return () => {
+      window.clearTimeout(timer);
+      if (touchTimer.current !== null) window.clearTimeout(touchTimer.current);
+    };
   }, []);
 
   if (loading) {
@@ -107,9 +120,9 @@ export default function Hero() {
             onPointerMove={handlePointerMove}
             onPointerDown={handlePointerDown}
             onPointerUp={handlePointerUp}
-            onPointerCancel={() => setColorActive(false)}
+            onPointerCancel={() => setColorReveal(false)}
             onPointerLeave={(e) => {
-              if (e.pointerType === "mouse") setColorActive(false);
+              if (e.pointerType === "mouse") setColorReveal(false);
             }}
             initial={{ opacity: 0, scale: 0.9, y: 100 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -122,6 +135,7 @@ export default function Hero() {
               className="relative z-10 block h-auto w-full grayscale drop-shadow-2xl xl:scale-110"
             />
             <motion.div
+              data-color-reveal
               className="pointer-events-none absolute inset-0 z-20 xl:scale-110"
               animate={{ opacity: colorActive ? 1 : 0 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
@@ -143,10 +157,10 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="hero-actions mx-auto flex w-full max-w-[360px] flex-col gap-3"
         >
-          <a href="#work" className="min-h-12 rounded-full bg-[#FF3366] px-6 py-3 text-center text-sm font-bold text-white shadow-lg shadow-pink-500/30 transition-transform hover:scale-105">
+          <a href="#work" data-magnetic className="min-h-12 rounded-full bg-[#FF3366] px-6 py-3 text-center text-sm font-bold text-white shadow-lg shadow-pink-500/30 transition-transform hover:scale-105">
             View My Work →
           </a>
-          <a href="#contact" className="min-h-12 rounded-full bg-black px-6 py-3 text-center text-sm font-bold text-white shadow-lg transition-transform hover:scale-105">
+          <a href="#contact" data-magnetic className="min-h-12 rounded-full bg-black px-6 py-3 text-center text-sm font-bold text-white shadow-lg transition-transform hover:scale-105">
             Contact Me
           </a>
         </motion.div>

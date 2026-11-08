@@ -5,7 +5,7 @@ export default function Education() {
   return (
     <section className="py-20 sm:py-24 md:py-32 px-4 sm:px-6 bg-[#f4f4f5]">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-6xl font-extrabold mb-12 md:mb-20 text-center text-black tracking-tighter">My Background</h2>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl md:text-6xl font-extrabold mb-12 md:mb-20 text-center text-black tracking-tighter">My Background</motion.h2>
         
         <div className="grid min-w-0 grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
           {/* Education Column */}

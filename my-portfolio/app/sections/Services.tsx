@@ -13,7 +13,7 @@ export default function Services() {
     <section className="py-20 sm:py-24 md:py-32 px-4 sm:px-6 bg-white border-y border-gray-200">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16 md:mb-20">
-          <h2 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tighter text-black">What I Work With</h2>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tighter text-black">What I Work With</motion.h2>
           <p className="text-gray-500 font-medium text-lg max-w-2xl mx-auto text-center">
             The tools and technologies I use to bring ideas to life.
           </p>

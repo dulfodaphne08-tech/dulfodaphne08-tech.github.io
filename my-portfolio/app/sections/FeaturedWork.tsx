@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const projects = [
@@ -43,6 +43,23 @@ const projects = [
 
 export default function FeaturedWork() {
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!selectedProject) return;
+
+    closeButtonRef.current?.focus();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedProject(null);
+        triggerRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedProject]);
 
   return (
     <section id="work" className="pt-24 sm:pt-28 md:pt-40 pb-20 md:pb-32 bg-[#f4f4f5] border-y border-gray-200">
@@ -58,13 +75,13 @@ export default function FeaturedWork() {
 
         <div className="space-y-20 md:space-y-32">
           {projects.map((project, index) => (
-            <motion.div 
+            <motion.article
               key={project.id}
               initial={{ opacity: 0, y: 40 }} 
               whileInView={{ opacity: 1, y: 0 }} 
               viewport={{ once: true }} 
               transition={{ duration: 0.8 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
+              className="project-row group/project grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
             >
               <div className={index % 2 !== 0 ? "lg:order-2" : ""}>
                 <div className="flex flex-wrap items-center gap-4 mb-6">
@@ -75,7 +92,7 @@ export default function FeaturedWork() {
                   <span className="text-gray-500 text-sm font-bold tracking-widest uppercase">{project.role}</span>
                 </div>
                 
-                <h3 className="text-3xl sm:text-4xl md:text-5xl font-normal mb-6 md:mb-8 text-black tracking-tight text-balance">
+                <h3 className="project-title text-3xl sm:text-4xl md:text-5xl font-normal mb-6 md:mb-8 text-black tracking-tight text-balance">
                   {project.title}
                 </h3>
                 
@@ -92,22 +109,26 @@ export default function FeaturedWork() {
                 </div>
 
                 <button 
-                  onClick={() => setSelectedProject(project)}
+                  data-magnetic
+                  onClick={(event) => {
+                    triggerRef.current = event.currentTarget;
+                    setSelectedProject(project);
+                  }}
                   className="min-h-12 px-8 py-3 md:px-10 md:py-5 bg-black text-white font-bold text-base md:text-lg rounded-full hover:bg-[#FF3366] transition-all shadow-xl hover:-translate-y-1 w-full md:w-auto text-center"
                 >
-                  View Project Details →
+                  View Project Details <span className="project-arrow inline-block">→</span>
                 </button>
               </div>
 
               <div className={`relative ${index % 2 !== 0 ? "lg:order-1" : ""}`}>
                 <motion.div 
                   whileHover={{ scale: 1.02 }}
-                  className="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl border-[6px] border-white bg-gray-100"
+                  className="project-image aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl border-[6px] border-white bg-gray-100"
                 >
-                  <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover" />
+                  <img src={project.images[0]} alt={project.title} className="h-full w-full object-cover transition-transform duration-700 group-hover/project:scale-[1.035]" />
                 </motion.div>
               </div>
-            </motion.div>
+            </motion.article>
           ))}
         </div>
       </div>
@@ -117,24 +138,48 @@ export default function FeaturedWork() {
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 md:p-8 overflow-y-auto"
-            onClick={() => setSelectedProject(null)}
+            onClick={() => {
+              setSelectedProject(null);
+              triggerRef.current?.focus();
+            }}
           >
             <motion.div 
               initial={{ y: 50, opacity: 0, scale: 0.95 }} animate={{ y: 0, opacity: 1, scale: 1 }} exit={{ y: 20, opacity: 0, scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
+              onKeyDown={(event) => {
+                if (event.key === "Tab") {
+                  event.preventDefault();
+                  closeButtonRef.current?.focus();
+                }
+              }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="selected-project-title"
+              tabIndex={-1}
               className="bg-white w-full max-w-5xl rounded-[2.5rem] overflow-hidden shadow-2xl my-auto"
             >
               <div className="relative h-64 md:h-96 w-full bg-gray-100">
                 <img src={selectedProject.images[0]} alt="cover" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
-                <button onClick={() => setSelectedProject(null)} className="absolute top-6 right-6 w-14 h-14 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-[#FF3366] hover:text-white transition-colors shadow-xl font-black text-xl">✕</button>
+                <button
+                  ref={closeButtonRef}
+                  type="button"
+                  aria-label="Close project details"
+                  onClick={() => {
+                    setSelectedProject(null);
+                    triggerRef.current?.focus();
+                  }}
+                  className="absolute top-6 right-6 w-14 h-14 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-[#FF3366] hover:text-white transition-colors shadow-xl font-black text-xl"
+                >
+                  ✕
+                </button>
               </div>
 
               <div className="px-6 md:px-16 pb-16 -mt-24 relative z-10">
                 <span className="inline-block px-5 py-2 bg-[#FF3366] text-white text-xs font-black rounded-full tracking-widest uppercase mb-6 shadow-lg shadow-pink-500/30">
                   {selectedProject.year}
                 </span>
-                <h2 className="text-4xl md:text-6xl font-normal text-black mb-4 tracking-tighter text-balance">{selectedProject.title}</h2>
+                <h2 id="selected-project-title" className="text-4xl md:text-6xl font-normal text-black mb-4 tracking-tighter text-balance">{selectedProject.title}</h2>
                 <p className="text-gray-500 font-bold tracking-widest uppercase mb-12">{selectedProject.role}</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
@@ -166,7 +211,7 @@ export default function FeaturedWork() {
 
                 <div className="bg-[#111] p-10 rounded-[2rem] shadow-xl mb-16">
                   <h4 className="text-2xl font-bold text-white mb-4">What I Learned</h4>
-                  <p className="text-gray-300 leading-relaxed font-medium text-lg italic text-justify">"{selectedProject.learnings}"</p>
+                  <p className="text-gray-300 leading-relaxed font-medium text-lg italic text-justify">&ldquo;{selectedProject.learnings}&rdquo;</p>
                 </div>
 
                 <h4 className="text-2xl font-bold text-black mb-8">Project Screenshots</h4>
