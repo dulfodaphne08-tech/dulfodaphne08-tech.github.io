@@ -1,21 +1,38 @@
 "use client";
-import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
-import { useState, useEffect, useRef, MouseEvent } from "react";
+import { motion, useMotionTemplate, useSpring } from "framer-motion";
+import { useState, useEffect, useRef, PointerEvent } from "react";
 
 export default function Hero() {
   const [loading, setLoading] = useState(true);
   const pictureSrc = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/picture.png`;
   const containerRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const [colorActive, setColorActive] = useState(false);
+  const pointerX = useSpring(0, { stiffness: 180, damping: 24 });
+  const pointerY = useSpring(0, { stiffness: 180, damping: 24 });
+  const revealSize = useSpring(180, { stiffness: 180, damping: 24 });
 
-  const maskImage = useMotionTemplate`radial-gradient(circle 250px at ${mouseX}px ${mouseY}px, black 100%, transparent 100%)`;
+  const maskImage = useMotionTemplate`radial-gradient(circle ${revealSize}px at ${pointerX}px ${pointerY}px, black 0%, black 65%, transparent 100%)`;
 
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+  const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
+    pointerX.set(e.clientX - rect.left);
+    pointerY.set(e.clientY - rect.top);
+    revealSize.set(e.pointerType === "touch" ? 90 : 250);
+    if (e.pointerType === "mouse") setColorActive(true);
+  };
+
+  const handlePointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "touch") {
+      handlePointerMove(e);
+      setColorActive(true);
+    }
+  };
+
+  const handlePointerUp = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "touch") {
+      window.setTimeout(() => setColorActive(false), 450);
+    }
   };
 
   useEffect(() => {
@@ -36,18 +53,16 @@ export default function Hero() {
   return (
     <section className="min-h-screen relative pt-28 md:pt-32 flex flex-col justify-end overflow-hidden bg-[#f4f4f5]">
       
-      {/* 1. GIANT BACKGROUND NAME - MOVED TO TOP & SLOWED DOWN */}
-      <div className="absolute top-[15%] left-0 hidden w-full overflow-hidden pointer-events-none z-0 md:flex">
+      <div aria-hidden="true" className="absolute top-[25%] md:top-[15%] left-0 flex w-full overflow-hidden pointer-events-none z-0">
         <motion.div 
           animate={{ x: ["0%", "-50%"] }} 
-          // Changed duration from 20 to 45 to make it much slower
           transition={{ repeat: Infinity, duration: 45, ease: "linear" }}
           className="whitespace-nowrap flex"
         >
-          <h1 className="text-[22vw] leading-none text-black uppercase tracking-tighter drop-shadow-lg" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontWeight: 400 }}>
+          <h1 className="text-[7vw] md:text-[22vw] leading-none text-black/70 md:text-black uppercase tracking-tighter drop-shadow-lg" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontWeight: 400 }}>
             DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp;
           </h1>
-          <h1 className="text-[22vw] leading-none text-black uppercase tracking-tighter drop-shadow-lg" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontWeight: 400 }}>
+          <h1 className="text-[7vw] md:text-[22vw] leading-none text-black/70 md:text-black uppercase tracking-tighter drop-shadow-lg" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontWeight: 400 }}>
             DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp; DAPHNE DULFO &nbsp;&nbsp;&nbsp;
           </h1>
         </motion.div>
@@ -100,11 +115,17 @@ export default function Hero() {
         <div className="md:col-span-6 flex justify-center h-full z-10 relative">
           <motion.div 
             ref={containerRef} 
-            onMouseMove={handleMouseMove} 
+            onPointerMove={handlePointerMove}
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={() => setColorActive(false)}
+            onPointerLeave={(e) => {
+              if (e.pointerType === "mouse") setColorActive(false);
+            }}
             initial={{ opacity: 0, scale: 0.9, y: 100 }} 
             animate={{ opacity: 1, scale: 1, y: 0 }} 
             transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }} 
-            className="w-full max-w-[1000px] h-[40svh] min-h-[280px] max-h-[360px] md:h-screen md:max-h-none relative cursor-none flex items-end justify-center"
+            className="w-full max-w-[1000px] h-[40svh] min-h-[280px] max-h-[360px] md:h-screen md:max-h-none relative cursor-none flex items-end justify-center touch-pan-y"
           >
             <img 
               src={pictureSrc}
@@ -113,6 +134,8 @@ export default function Hero() {
             />
             <motion.div 
               className="absolute inset-0 w-full h-full z-10 pointer-events-none md:scale-125 origin-bottom"
+              animate={{ opacity: colorActive ? 1 : 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
               style={{ 
                 backgroundImage: `url('${pictureSrc}')`,
                 backgroundSize: "contain", 
