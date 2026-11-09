@@ -3,7 +3,6 @@ import { motion, useMotionTemplate, useSpring } from "framer-motion";
 import { useState, useEffect, useRef, PointerEvent } from "react";
 
 export default function Hero() {
-  const [loading, setLoading] = useState(true);
   const pictureSrc = "/picture.png";
   const containerRef = useRef<HTMLDivElement>(null);
   const touchTimer = useRef<number | null>(null);
@@ -46,27 +45,28 @@ export default function Hero() {
   };
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setLoading(false), 800);
+    // Force page to load at the very top
+    window.scrollTo(0, 0);
     return () => {
-      window.clearTimeout(timer);
       if (touchTimer.current !== null) window.clearTimeout(touchTimer.current);
     };
   }, []);
 
-  if (loading) return null;
-
   return (
-    <section className="relative w-full h-[100svh] overflow-hidden bg-transparent flex flex-col justify-end items-center">
-      <div className="absolute top-[10%] md:top-1/2 left-0 w-full md:-translate-y-1/2 z-0 pointer-events-none overflow-hidden flex">
+    // Added transform-gpu and will-change-transform to force smooth rendering
+    <section className="hero-section relative w-full h-[100svh] overflow-hidden bg-transparent flex flex-col justify-end items-center transform-gpu will-change-transform">
+      
+      {/* BACKGROUND NAME */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center">
         <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
-          className="flex whitespace-nowrap will-change-transform"
+          animate={{ x: ["0%", "-15%", "-50%"] }}
+          transition={{ duration: 50, ease: "linear", times: [0, 0.02, 1] }}
+          className="flex whitespace-nowrap will-change-transform transform-gpu"
         >
           {[0, 1, 2, 3].map((copy) => (
             <h1
               key={copy}
-              className="hero-wordmark-copy text-[clamp(7rem,28vw,26rem)] md:text-[clamp(9rem,22vw,28rem)] font-black uppercase tracking-tighter text-black/[0.14] dark:text-white/[0.22] leading-none pr-12 select-none"
+              className="hero-wordmark-copy text-[20vw] md:text-[18vw] font-black uppercase tracking-[-0.04em] leading-none select-none text-black dark:text-white pr-10 md:pr-20"
               aria-hidden="true"
             >
               DAPHNE DULFO
@@ -75,6 +75,7 @@ export default function Hero() {
         </motion.div>
       </div>
 
+      {/* PICTURE */}
       <div className="relative z-10 w-full flex justify-center items-end mt-auto pb-0 md:pb-0">
         <motion.div
           ref={containerRef}
@@ -85,10 +86,10 @@ export default function Hero() {
           onPointerLeave={(e) => {
             if (e.pointerType === "mouse") setColorReveal(false);
           }}
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full md:w-[72vw] max-w-none md:max-w-[860px] h-[82svh] md:h-[85vh] cursor-crosshair touch-pan-y"
+          transition={{ type: "spring", stiffness: 60, damping: 14, mass: 1, delay: 0.1 }}
+          className="relative w-full md:w-[72vw] max-w-none md:max-w-[860px] h-[75svh] md:h-[85vh] cursor-crosshair touch-pan-y will-change-transform transform-gpu"
         >
           <img
             src={pictureSrc}
@@ -113,14 +114,15 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      <div className="absolute right-8 top-1/2 -translate-y-1/2 z-30 pointer-events-none hidden md:flex flex-col items-center gap-4">
+      {/* SCROLL INDICATOR */}
+      <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 pointer-events-none hidden md:flex flex-col items-center gap-4">
         <span
-          className="text-[9px] font-bold tracking-[0.3em] uppercase text-gray-500 dark:text-white"
+          className="text-[9px] font-bold tracking-[0.3em] uppercase text-black dark:text-white"
           style={{ writingMode: "vertical-rl" }}
         >
           Scroll Down
         </span>
-        <div className="w-[1px] h-12 bg-gray-300 dark:bg-white" />
+        <div className="w-[1px] h-12 bg-black dark:bg-white" />
       </div>
     </section>
   );

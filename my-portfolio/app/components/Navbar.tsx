@@ -5,7 +5,7 @@ import ThemeToggle from "./ThemeToggle";
 
 const links = [
   ["About", "#about"],
-  ["Process", "#journey"],
+  ["Education", "#education"], // Changed to target the new ID!
   ["Work", "#work"],
   ["Contact", "#contact"],
 ];
@@ -38,7 +38,7 @@ export default function Navbar() {
         
         <a href="#" aria-label="Home" className="flex items-center gap-2 pl-1 group">
           <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-200 dark:border-[#26262A]">
-            <img src="/picture.png" alt="Daphne" className="w-full h-full object-cover grayscale" />
+            <img src="/picture.png" alt="Daphne" className="w-full h-full object-cover" />
           </div>
           <span className="font-extrabold text-sm tracking-widest uppercase text-black dark:text-white">
             Daphne
@@ -47,7 +47,7 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-8">
           {links.map(([label, href]) => (
-            <a key={href} href={href} className="text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors dark:text-[#85858C] dark:hover:text-white">
+            <a key={label} href={href} className="text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors dark:text-[#85858C] dark:hover:text-white">
               {label}
             </a>
           ))}
@@ -82,7 +82,7 @@ export default function Navbar() {
             <div className="grid gap-1">
               {links.map(([label, href]) => (
                 <a
-                  key={href}
+                  key={label}
                   href={href}
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-black hover:bg-gray-50 dark:text-white dark:hover:bg-[#171719]"

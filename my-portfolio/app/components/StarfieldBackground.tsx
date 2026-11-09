@@ -160,7 +160,10 @@ export default function StarfieldBackground() {
 
     readTheme();
     resize();
-    start();
+    
+    // DELAY THE CANVAS ANIMATION BY 1.5 SECONDS so the Hero animates smoothly first
+    const startDelay = window.setTimeout(() => start(), 1500);
+
     window.addEventListener("resize", resize, { passive: true });
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
     window.addEventListener("pointerdown", handlePointerDown, { passive: true });
@@ -170,6 +173,7 @@ export default function StarfieldBackground() {
     reducedMotion.addEventListener("change", updateMotion);
 
     return () => {
+      window.clearTimeout(startDelay);
       stop();
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", handlePointerMove);

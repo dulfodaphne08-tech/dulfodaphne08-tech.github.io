@@ -17,10 +17,10 @@
   --starfield-dot-rgb: 255, 51, 102;
   --starfield-line-rgb: 75, 75, 85;
   --starfield-pointer-rgb: 255, 51, 102;
-  --font-montserrat: "Montserrat", sans-serif;
-  --font-playfair: "Playfair Display", serif;
-  --font-anton: "Anton", Impact, sans-serif;
   color-scheme: light;
+  --font-anton: 'Anton', Impact, sans-serif;
+  --font-playfair: 'Playfair Display', Georgia, serif;
+  --font-montserrat: 'Montserrat', system-ui, sans-serif;
 }
 
 :root[data-theme="dark"] {
@@ -89,9 +89,34 @@ main > section:not(.hero-section) {
       transparent 42%
     );
   background-size: 56px 56px, 56px 56px, 100% 100%;
-    background-repeat: repeat, repeat, no-repeat;
-    background-position: calc(50% + var(--ambient-shift-x)) calc(50% + var(--ambient-shift-y)), calc(50% + var(--ambient-shift-x)) calc(50% + var(--ambient-shift-y)), 0 0;
+  background-repeat: repeat, repeat, no-repeat;
+  background-position: calc(50% + var(--ambient-shift-x)) calc(50% + var(--ambient-shift-y)), calc(50% + var(--ambient-shift-x)) calc(50% + var(--ambient-shift-y)), 0 0;
   transition: background-color 450ms ease;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding-top: max(7.5rem, calc(env(safe-area-inset-top) + 6.5rem));
+}
+
+/* === BACKGROUND TEXT STYLING === */
+.hero-wordmark-copy {
+  flex: none;
+  margin: 0;
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-weight: 900;
+  opacity: 1 !important; 
+}
+
+/* Force Solid Black in Light Mode */
+:root:not([data-theme="dark"]) .hero-wordmark-copy {
+  color: #000000 !important;
+  -webkit-text-stroke: 0px transparent !important;
+}
+
+/* Force Solid White in Dark Mode */
+:root[data-theme="dark"] .hero-wordmark-copy {
+  color: #ffffff !important;
+  -webkit-text-stroke: 0px transparent !important;
 }
 
 .starfield-background {
@@ -334,26 +359,16 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
 
 :root[data-theme="dark"] [class~="text-gray-700"],
 :root[data-theme="dark"] [class~="text-gray-600"] {
-  color: #e4e4e9 !important;
+  color: #d3d3d9 !important;
 }
 
 :root[data-theme="dark"] [class~="text-gray-500"],
 :root[data-theme="dark"] [class~="text-gray-400"] {
-  color: #c8c8d0 !important;
+  color: #a6a6af !important;
 }
 
 :root[data-theme="dark"] [class~="text-gray-300"] {
-  color: #d8d8de !important;
-}
-
-:root[data-theme="dark"] p,
-:root[data-theme="dark"] li,
-:root[data-theme="dark"] span:not([class*="text-"]):not([style*="color"]) {
-  color: inherit;
-}
-
-:root[data-theme="dark"] main p {
-  color: var(--foreground-muted);
+  color: #c7c7ce !important;
 }
 
 :root[data-theme="dark"] [class~="border-gray-100"],
@@ -370,33 +385,6 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
 
 :root[data-theme="dark"] .hero-section {
   background-color: var(--background) !important;
-}
-
-:root[data-theme="dark"] .hero-section .hero-intro > div,
-:root[data-theme="dark"] .hero-section .hero-social > div {
-  background-color: color-mix(in srgb, var(--surface) 90%, transparent) !important;
-  border-color: var(--border) !important;
-}
-
-:root[data-theme="dark"] .hero-section .hero-intro p,
-:root[data-theme="dark"] .hero-section .hero-intro h2 {
-  color: var(--foreground) !important;
-}
-
-:root:not([data-theme="dark"]) .hero-wordmark-copy {
-  color: rgb(17 17 20 / 16%);
-}
-
-:root[data-theme="dark"] .hero-wordmark-copy {
-  color: rgb(255 255 255 / 24%);
-  -webkit-text-stroke: 1px rgb(255 255 255 / 10%);
-  text-shadow: 0 0 40px rgb(255 255 255 / 4%);
-}
-
-:root[data-theme="dark"] .hero-section .hero-actions a:last-child,
-:root[data-theme="dark"] .nav-cta {
-  background-color: #f5f5f6 !important;
-  color: #111114 !important;
 }
 
 :root[data-theme="dark"] .nav-brand,
@@ -443,204 +431,12 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   color: #92929c;
 }
 
-.hero-section {
-  display: flex;
-  align-items: center;
-  min-height: 95svh;
-  padding-top: max(7.5rem, calc(env(safe-area-inset-top) + 6.5rem));
-}
-
-.hero-wordmark {
-  grid-area: wordmark;
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  line-height: 0.8;
-}
-
-.hero-wordmark-track {
-  will-change: transform;
-}
-
-.hero-wordmark-copy {
-  flex: none;
-  margin: 0;
-  color: color-mix(in srgb, var(--foreground) 10%, transparent);
-  font-family: var(--font-anton), Impact, sans-serif;
-}
-
 .hero-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas:
-    "intro"
-    "wordmark"
-    "portrait"
-    "actions"
-    "social";
   align-items: center;
   justify-items: center;
   gap: clamp(0.75rem, 2vw, 1.5rem);
-}
-
-.hero-intro {
-  grid-area: intro;
-  z-index: 3;
-  width: min(100%, 22rem);
-}
-
-.hero-portrait {
-  grid-area: portrait;
-  z-index: 2;
-  width: 100%;
-  min-width: 0;
-  justify-self: center;
-}
-
-.hero-portrait-frame {
-  width: min(82vw, 420px);
-}
-
-.hero-portrait-frame img,
-.hero-portrait-frame [data-color-reveal] {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: contain;
-  translate: calc(var(--ambient-shift-x) * 0.08) calc(var(--ambient-shift-y) * 0.08);
-  transition: translate 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-.hero-portrait-image {
-  filter: grayscale(1) brightness(0.98) drop-shadow(0 1.25rem 1.25rem rgb(17 17 17 / 12%));
-  transition:
-    filter 450ms ease,
-    translate 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-.hero-portrait-frame[data-color-active="true"] .hero-portrait-image {
-  filter:
-    grayscale(0)
-    brightness(1.04)
-    contrast(1.03)
-    drop-shadow(0 1.5rem 1.75rem color-mix(in srgb, var(--accent) 18%, transparent));
-}
-
-.hero-actions {
-  grid-area: actions;
-  z-index: 3;
-}
-
-.hero-social {
-  grid-area: social;
-  z-index: 3;
-}
-
-.hero-section + section {
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
-}
-
-.project-row,
-.project-image {
-  transition: border-color 300ms ease, box-shadow 300ms ease, translate 300ms ease;
-}
-
-.project-row:hover .project-title {
-  translate: 3px 0;
-  color: var(--accent);
-}
-
-.project-row:hover .project-image {
-  border-color: color-mix(in srgb, var(--accent) 45%, white);
-  box-shadow: 0 24px 70px color-mix(in srgb, var(--accent) 12%, transparent);
-}
-
-.project-arrow {
-  transition: translate 200ms ease;
-}
-
-.project-row button:hover .project-arrow {
-  translate: 4px 0;
-}
-
-.group:hover {
-  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
-}
-
-@media (min-width: 768px) and (max-width: 1099px) {
-  .hero-layout {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    grid-template-areas:
-      "wordmark wordmark"
-      "intro portrait"
-      "actions portrait"
-      "social social";
-    column-gap: clamp(1.5rem, 4vw, 3rem);
-    row-gap: 1.25rem;
-  }
-
-  .hero-section {
-    padding-top: 8.5rem;
-  }
-
-  .hero-wordmark-copy {
-    font-size: clamp(5rem, 10vw, 7rem);
-  }
-
-  .hero-portrait-frame {
-    width: clamp(20rem, 42vw, 29rem);
-  }
-
-  .hero-social > div {
-    max-width: 26rem;
-  }
-
-  .hero-section + section {
-    margin-top: 2rem;
-  }
-}
-
-@media (min-width: 1100px) {
-  .hero-layout {
-    grid-template-columns: minmax(13rem, 0.8fr) minmax(0, 1.8fr) minmax(13rem, 0.8fr);
-    grid-template-areas:
-      "wordmark wordmark wordmark"
-      "intro portrait social"
-      "actions portrait social";
-    gap: clamp(1.25rem, 2.5vw, 2.5rem);
-  }
-
-  .hero-section {
-    padding-top: 8.5rem;
-    padding-bottom: 4rem;
-  }
-
-  .hero-wordmark-copy {
-    font-size: clamp(7rem, 9vw, 10rem);
-  }
-
-  .hero-portrait-frame {
-    width: clamp(34rem, 42vw, 42rem);
-  }
-
-  @media (max-width: 767px) {
-    .hero-section {
-      min-height: 0;
-    }
-
-    .hero-wordmark-copy {
-      font-size: clamp(3rem, 11vw, 4.5rem);
-    }
-  }
-
-  .hero-social {
-    align-self: end;
-    justify-self: end;
-  }
-
-  .hero-section + section {
-    margin-top: 2.5rem;
-  }
 }
 
 .cursor {
@@ -655,7 +451,7 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   z-index: 9999;
   opacity: 0;
   border-radius: 50%;
-  will-change: transform;
+  transform: translate3d(-50%, -50%, 0);
   box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 20%, transparent);
   transition: width 180ms ease, height 180ms ease, opacity 180ms ease, background-color 180ms ease;
 }
@@ -898,7 +694,6 @@ a:focus-visible {
    FONTS APPLIED TO ALL SECTIONS
    ========================================= */
 
-/* Apply elegant Serif to ALL headers everywhere */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-playfair), serif;
   font-weight: 700;
@@ -906,16 +701,14 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
 
-/* Apply Montserrat to ALL wordings */
 p, span, li, a, button {
   font-family: var(--font-montserrat), sans-serif;
 }
 
-/* FIXED: Removed text-align: justify so it doesn't break your layout */
 p {
   line-height: 1.8;
   font-weight: 500;
-  color: var(--foreground-muted);
+  color: #4b5563;
 }
 
 :root main > section {
@@ -942,8 +735,62 @@ p {
   background-color: rgb(9 9 11 / 75%) !important;
 }
 
+/* =========================================
+   ABOUT & JOURNEY SECTION FIXES
+   ========================================= */
+
+main > section#about {
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+@media (min-width: 768px) {
+  main > section#about .relative > .hidden.md\:block.absolute.left-1\/2 {
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+}
+
+main > section#about .space-y-8 > div {
+  min-height: 100px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .starfield-background::before {
     animation: none;
   }
+}
+
+/* Custom Scrollbar for the Timeline */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--foreground) 20%, transparent);
+  border-radius: 10px;
+}
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--foreground) 20%, transparent) transparent;
+}
+
+html {
+  overflow-x: clip;
+  scrollbar-width: none;
+  /* Keep this at 8rem! */
+  scroll-padding-top: 8rem; 
+}
+
+/* Force hardware acceleration for smooth opening animations */
+.transform-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Make sure the Hero background section doesn't lag */
+.hero-section {
+  transform: translateZ(0);
+  will-change: transform;
 }

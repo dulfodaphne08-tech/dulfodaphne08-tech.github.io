@@ -14,6 +14,9 @@ export const metadata = {
 }
 
 const themeInitScript = `try {
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
   const savedTheme = localStorage.getItem("portfolio-theme");
   const theme = savedTheme === "light" || savedTheme === "dark"
     ? savedTheme
@@ -40,17 +43,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script id="theme-init" strategy="beforeInteractive">{themeInitScript}</Script>
         <ThemeProvider>
           <MotionConfig reducedMotion="user">
-
             <AmbientExperience />
             <StarfieldBackground />
             <Cursor />
-
             <div className="relative z-10">
               <Navbar />
               <main>{children}</main>
               <Footer />
             </div>
-
           </MotionConfig>
         </ThemeProvider>
       </body>
