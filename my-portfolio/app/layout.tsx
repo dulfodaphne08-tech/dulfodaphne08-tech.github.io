@@ -6,12 +6,7 @@ import StarfieldBackground from './components/StarfieldBackground'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import { ThemeProvider } from './components/ThemeProvider'
-import { Playfair_Display, Montserrat, Anton } from 'next/font/google'
 import Script from 'next/script'
-
-const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '600', '700', '900'], variable: '--font-playfair' })
-const montserrat = Montserrat({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-montserrat' })
-const anton = Anton({ subsets: ['latin'], weight: '400', variable: '--font-anton' })
 
 export const metadata = {
   title: 'Daphne Dulfo | Portfolio',
@@ -33,11 +28,19 @@ const themeInitScript = `try {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className="bg-[#f4f4f5] dark:bg-[#0B0B0D]">
-      <body className={`${playfair.variable} ${montserrat.variable} ${anton.variable} font-sans overflow-x-hidden`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="font-sans overflow-x-hidden">
         <Script id="theme-init" strategy="beforeInteractive">{themeInitScript}</Script>
         <ThemeProvider>
           <MotionConfig reducedMotion="user">
-            
+
             <AmbientExperience />
             <StarfieldBackground />
             <Cursor />
@@ -47,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <main>{children}</main>
               <Footer />
             </div>
-            
+
           </MotionConfig>
         </ThemeProvider>
       </body>

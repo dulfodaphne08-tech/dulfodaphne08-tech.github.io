@@ -7,28 +7,33 @@ export default function Hero() {
   const pictureSrc = "/picture.png";
   const containerRef = useRef<HTMLDivElement>(null);
   const touchTimer = useRef<number | null>(null);
-  
-  const pointerX = useSpring(0, { stiffness: 180, damping: 24 });
-  const pointerY = useSpring(0, { stiffness: 180, damping: 24 });
-  const revealSize = useSpring(180, { stiffness: 180, damping: 24 });
+
+  const pointerX = useSpring(0, { stiffness: 120, damping: 20, mass: 0.35 });
+  const pointerY = useSpring(0, { stiffness: 120, damping: 20, mass: 0.35 });
+  const revealSize = useSpring(180, { stiffness: 140, damping: 22, mass: 0.4 });
   const [colorActive, setColorActive] = useState(false);
 
   const maskImage = useMotionTemplate`radial-gradient(circle ${revealSize}px at ${pointerX}px ${pointerY}px, black 0%, black 65%, transparent 100%)`;
 
   const setColorReveal = (active: boolean) => setColorActive(active);
 
-  const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
+  const updatePointer = (e: PointerEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     pointerX.set(e.clientX - rect.left);
     pointerY.set(e.clientY - rect.top);
-    revealSize.set(e.pointerType === "touch" ? 90 : 250);
+    revealSize.set(e.pointerType === "touch" ? 110 : 250);
+  };
+
+  const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    updatePointer(e);
     if (e.pointerType === "mouse") setColorReveal(true);
   };
 
   const handlePointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    updatePointer(e);
     if (e.pointerType === "touch") {
-      handlePointerMove(e);
+      if (touchTimer.current !== null) window.clearTimeout(touchTimer.current);
       setColorReveal(true);
     }
   };
@@ -36,7 +41,7 @@ export default function Hero() {
   const handlePointerUp = (e: PointerEvent<HTMLDivElement>) => {
     if (e.pointerType === "touch") {
       if (touchTimer.current !== null) window.clearTimeout(touchTimer.current);
-      touchTimer.current = window.setTimeout(() => setColorReveal(false), 650);
+      touchTimer.current = window.setTimeout(() => setColorReveal(false), 900);
     }
   };
 
@@ -48,68 +53,75 @@ export default function Hero() {
     };
   }, []);
 
-  if (loading) return null; 
+  if (loading) return null;
 
   return (
     <section className="relative w-full h-[100svh] overflow-hidden bg-transparent flex flex-col justify-end items-center">
-      
-      {/* Background text - FIXED DARK MODE VISIBILITY */}
-      <div className="absolute top-1/2 left-0 w-full -translate-y-1/2 z-0 pointer-events-none overflow-hidden flex">
+      <div className="absolute top-[10%] md:top-1/2 left-0 w-full md:-translate-y-1/2 z-0 pointer-events-none overflow-hidden flex">
         <motion.div
           animate={{ x: ["0%", "-50%"] }}
           transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
-          className="flex whitespace-nowrap"
+          className="flex whitespace-nowrap will-change-transform"
         >
           {[0, 1, 2, 3].map((copy) => (
-            <h1 
-              key={copy} 
-              // FIX: Changed to text-black/10 (light mode) and dark:text-white/10 (dark mode) so it's ALWAYS visible
-              className="hero-wordmark-copy text-[clamp(7rem,18vw,22rem)] font-black uppercase tracking-tighter text-black/10 dark:text-white/10 leading-none pr-12 select-none"
+            <h1
+              key={copy}
+              className="hero-wordmark-copy text-[clamp(7rem,28vw,26rem)] md:text-[clamp(9rem,22vw,28rem)] font-black uppercase tracking-tighter text-black/[0.14] dark:text-white/[0.22] leading-none pr-12 select-none"
+              aria-hidden="true"
             >
-              DAPHNE
+              DAPHNE DULFO
             </h1>
           ))}
         </motion.div>
       </div>
 
-      <div className="relative z-10 w-full flex justify-center mt-auto">
+      <div className="relative z-10 w-full flex justify-center items-end mt-auto pb-0 md:pb-0">
         <motion.div
           ref={containerRef}
           onPointerMove={handlePointerMove}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
           onPointerCancel={() => setColorReveal(false)}
-          onPointerLeave={(e) => { if (e.pointerType === "mouse") setColorReveal(false); }}
+          onPointerLeave={(e) => {
+            if (e.pointerType === "mouse") setColorReveal(false);
+          }}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-[95vw] md:w-[70vw] max-w-[800px] h-[75vh] md:h-[85vh] cursor-crosshair"
+          className="relative w-full md:w-[72vw] max-w-none md:max-w-[860px] h-[82svh] md:h-[85vh] cursor-crosshair touch-pan-y"
         >
-          <img src={pictureSrc} alt="Daphne" className="absolute inset-0 w-full h-full object-contain object-bottom grayscale drop-shadow-2xl" />
-          
+          <img
+            src={pictureSrc}
+            alt="Daphne"
+            className="absolute inset-0 w-full h-full object-contain object-bottom grayscale drop-shadow-2xl"
+            draggable={false}
+          />
+
           <motion.div
             className="pointer-events-none absolute inset-0 z-20"
             animate={{ opacity: colorActive ? 1 : 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
             style={{
               backgroundImage: `url('${pictureSrc}')`,
               backgroundSize: "contain",
               backgroundPosition: "bottom center",
               backgroundRepeat: "no-repeat",
               maskImage,
-              WebkitMaskImage: maskImage
+              WebkitMaskImage: maskImage,
             }}
           />
         </motion.div>
       </div>
 
       <div className="absolute right-8 top-1/2 -translate-y-1/2 z-30 pointer-events-none hidden md:flex flex-col items-center gap-4">
-        <span className="text-[9px] font-bold tracking-[0.3em] uppercase text-gray-500 dark:text-white" style={{ writingMode: 'vertical-rl' }}>
+        <span
+          className="text-[9px] font-bold tracking-[0.3em] uppercase text-gray-500 dark:text-white"
+          style={{ writingMode: "vertical-rl" }}
+        >
           Scroll Down
         </span>
         <div className="w-[1px] h-12 bg-gray-300 dark:bg-white" />
       </div>
-
     </section>
   );
 }

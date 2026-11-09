@@ -10,20 +10,29 @@ export default function Cursor() {
     if (!cursor || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     let frame = 0;
-    let x = 0;
-    let y = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    const render = () => {
+      currentX += (targetX - currentX) * 0.22;
+      currentY += (targetY - currentY) * 0.22;
+      cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+      if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
+        frame = window.requestAnimationFrame(render);
+      } else {
+        cursor.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%)`;
+        frame = 0;
+      }
+    };
 
     const handlePointerMove = (event: PointerEvent) => {
       if (event.pointerType === "touch") return;
-      x = event.clientX;
-      y = event.clientY;
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        cursor.style.left = `${x}px`;
-        cursor.style.top = `${y}px`;
-        cursor.dataset.visible = "true";
-        frame = 0;
-      });
+      targetX = event.clientX;
+      targetY = event.clientY;
+      cursor.dataset.visible = "true";
+      if (!frame) frame = window.requestAnimationFrame(render);
     };
 
     const handlePointerOver = (event: PointerEvent) => {
