@@ -7,6 +7,7 @@ const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
   basePath,
+  output: "export",
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
