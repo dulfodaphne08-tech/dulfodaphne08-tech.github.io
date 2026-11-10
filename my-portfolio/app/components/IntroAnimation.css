@@ -1,0 +1,217 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap');
+
+/* MAIN INTRO */
+.intro-container {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      to top,
+      #101010 0%,
+      #050505 28%,
+      #000000 100%
+    );
+
+  opacity: 1;
+  visibility: visible;
+
+  transition:
+    opacity 0.7s ease,
+    visibility 0.7s ease;
+}
+
+.intro-container.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* LIGHT FLOURISH */
+.intro-flourish {
+  position: absolute;
+  width: min(85vw, 900px);
+  height: auto;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flourish-path {
+  fill: none;
+  stroke: url(#flourishGradient);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+
+  filter: drop-shadow(0 0 4px white);
+
+  animation:
+    flourishDraw 1.3s ease-out 1.2s forwards,
+    flourishDisappear 0.5s ease-in 2.7s forwards;
+}
+
+.flourish-two {
+  animation-delay: 1.35s, 2.7s;
+  opacity: 0.5;
+}
+
+@keyframes flourishDraw {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 1500;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes flourishDisappear {
+  to {
+    opacity: 0;
+  }
+}
+
+/* NAME POSITION */
+.intro-name {
+  position: relative;
+  z-index: 2;
+
+  width: min(88vw, 900px);
+  height: auto;
+
+  overflow: visible;
+}
+
+/* BODONI MODA TYPOGRAPHY */
+.daphne-text {
+  font-family: 'Bodoni Moda', 'Didot', 'Bodoni MT', serif;
+
+  font-size: 132px;
+  font-weight: 400;
+
+  font-style: normal;
+  letter-spacing: 8px;
+
+  fill-opacity: 0;
+
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.3));
+
+animation:
+  letterDrawing 2.1s cubic-bezier(0.65, 0, 0.35, 1) 2.2s forwards,
+  lightSweep 1.3s ease-in-out 4.5s forwards,
+  letterDisassembly 0.9s ease-in 5.8s forwards;
+}
+
+/* LETTER DRAWING */
+@keyframes letterDrawing {
+  0% {
+    stroke-dashoffset: 1500;
+    fill-opacity: 0;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  70% {
+    stroke-dashoffset: 0;
+    fill-opacity: 0;
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+    stroke: #eeeeee;
+    opacity: 1;
+  }
+}
+
+/* LIGHT SWEEP ON THE SAME TEXT */
+@keyframes lightSweep {
+  0% {
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.2));
+  }
+
+  45% {
+    filter: drop-shadow(0 0 15px white)
+            drop-shadow(0 0 30px rgba(255,255,255,0.7));
+  }
+
+  100% {
+    filter: drop-shadow(0 0 4px rgba(255,255,255,0.35));
+  }
+}
+
+/* DISASSEMBLY */
+@keyframes letterDisassembly {
+  0% {
+    opacity: 1;
+    fill-opacity: 1;
+    stroke-dashoffset: 0;
+    filter: drop-shadow(0 0 5px white);
+  }
+
+  45% {
+    opacity: 0.8;
+    fill-opacity: 0.2;
+    stroke-dashoffset: 400;
+  }
+
+  100% {
+    opacity: 0;
+    fill-opacity: 0;
+    stroke-dashoffset: 1500;
+    filter: blur(5px);
+    transform: translateY(-8px);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .intro-name {
+    width: 94vw;
+  }
+
+  .daphne-text {
+    font-size: 132px;
+    letter-spacing: 5px;
+  }
+
+  .intro-flourish {
+    width: 100vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-container,
+  .daphne-text,
+  .flourish-path {
+    animation-duration: 0.01ms;
+  }
+}

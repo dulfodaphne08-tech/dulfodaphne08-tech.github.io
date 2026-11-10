@@ -54,12 +54,12 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 pr-1">
-          <div className="hidden md:flex items-center gap-2">
-            <ThemeToggle />
-            <a href="#contact" className="px-5 py-2 border border-gray-200 bg-white text-black text-xs font-bold rounded-full hover:bg-gray-50 transition-colors dark:bg-transparent dark:border-[#26262A] dark:text-white dark:hover:bg-[#171719]">
-              Let&apos;s Talk
-            </a>
-          </div>
+        <div className="flex items-center gap-2">
+  <ThemeToggle />
+  <a href="#contact" className="hidden sm:block px-5 py-2 border border-gray-200 bg-white text-black text-xs font-bold rounded-full hover:bg-gray-50 transition-colors dark:bg-transparent dark:border-[#26262A] dark:text-white dark:hover:bg-[#171719]">
+    Let&apos;s Talk
+  </a>
+</div>
           
           <button
             type="button"

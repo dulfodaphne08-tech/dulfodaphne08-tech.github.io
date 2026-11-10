@@ -1,11 +1,15 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import Hero from "./sections/Hero";
-import About from "./sections/About";
-import Services from "./sections/Services";
-import FeaturedWork from "./sections/FeaturedWork";
-import Workflow from "./sections/Workflow";
-import Skills from "./sections/Skills";
-import Resume from "./sections/Resume";
-import Contact from "./sections/Contact";
+
+const About = dynamic(() => import("./sections/About"));
+const Services = dynamic(() => import("./sections/Services"));
+const FeaturedWork = dynamic(() => import("./sections/FeaturedWork"));
+const Workflow = dynamic(() => import("./sections/Workflow"));
+const Skills = dynamic(() => import("./sections/Skills"));
+const Resume = dynamic(() => import("./sections/Resume"));
+const Contact = dynamic(() => import("./sections/Contact"));
 
 export default function Home() {
   return (
@@ -19,5 +23,5 @@ export default function Home() {
       <Resume />
       <Contact />
     </>
-  )
+  );
 }

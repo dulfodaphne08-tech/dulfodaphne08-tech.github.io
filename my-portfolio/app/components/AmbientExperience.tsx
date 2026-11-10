@@ -22,17 +22,16 @@ export default function AmbientExperience() {
     let magneticY = 0;
     let magneticTargetX = 0;
     let magneticTargetY = 0;
+    let lastMoveTime = 0;
 
     const animate = () => {
-      // Smooth interpolation
       currentX += (targetX - currentX) * 0.12;
       currentY += (targetY - currentY) * 0.12;
       magneticX += (magneticTargetX - magneticX) * 0.16;
       magneticY += (magneticTargetY - magneticY) * 0.16;
 
-      // Update CSS variables (Only if it has moved enough to notice)
-      root.style.setProperty("--pointer-x", `${currentX}px`);
-      root.style.setProperty("--pointer-y", `${currentY}px`);
+      root.style.setProperty("--pointer-x", `${currentX.toFixed(1)}px`);
+      root.style.setProperty("--pointer-y", `${currentY.toFixed(1)}px`);
       root.style.setProperty(
         "--ambient-shift-x",
         `${-((targetX / window.innerWidth) - 0.5) * 12}px`,
@@ -42,16 +41,14 @@ export default function AmbientExperience() {
         `${-((targetY / window.innerHeight) - 0.5) * 12}px`,
       );
 
-      // Handle magnetic buttons
       if (magneticElement) {
         magneticElement.style.translate = `${magneticX.toFixed(2)}px ${magneticY.toFixed(2)}px`;
       }
 
-      // Stop the loop when everything has settled to save CPU
       const pointerSettled =
         Math.abs(targetX - currentX) < 0.2 && Math.abs(targetY - currentY) < 0.2;
       const magneticSettled = Math.abs(magneticX) < 0.1 && Math.abs(magneticY) < 0.1;
-      
+
       if (pointerSettled && magneticSettled) {
         frame = 0;
         if (magneticElement && !magneticTargetX && !magneticTargetY) {
@@ -60,7 +57,7 @@ export default function AmbientExperience() {
         }
         return;
       }
-      
+
       frame = window.requestAnimationFrame(animate);
     };
 
@@ -70,6 +67,11 @@ export default function AmbientExperience() {
 
     const handlePointerMove = (event: PointerEvent) => {
       if (event.pointerType === "touch") return;
+      // Throttle to ~60fps max — prevent flooding on high-Hz mice
+      const now = performance.now();
+      if (now - lastMoveTime < 16) return;
+      lastMoveTime = now;
+
       targetX = event.clientX;
       targetY = event.clientY;
       root.dataset.pointerActive = "true";
@@ -134,7 +136,6 @@ export default function AmbientExperience() {
       requestFrame();
     };
 
-    // Use passive listeners for better scrolling performance
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
     window.addEventListener("pointerdown", handlePointerDown, { passive: true });
     window.addEventListener("pointerout", handlePointerOut);

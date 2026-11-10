@@ -38,10 +38,15 @@
   color-scheme: dark;
 }
 
+/* =========================================
+   GLOBAL BASE & SMOOTHNESS
+   ========================================= */
 html {
   overflow-x: clip;
   scrollbar-width: none;
-  scroll-padding-top: 6rem;
+  scroll-padding-top: 8rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -61,64 +66,68 @@ body p {
   color: var(--foreground-muted);
 }
 
+/* =========================================
+   SECTION BACKGROUNDS
+   ========================================= */
 main > section:not(.hero-section) {
   background-image:
     linear-gradient(color-mix(in srgb, var(--foreground) 2.2%, transparent) 1px, transparent 1px),
     linear-gradient(90deg, color-mix(in srgb, var(--foreground) 2.2%, transparent) 1px, transparent 1px),
-    radial-gradient(
-      ellipse at calc(90% + var(--ambient-shift-x)) 8%,
-      color-mix(in srgb, var(--accent) 4%, transparent),
-      transparent 36%
-    ),
-    radial-gradient(
-      ellipse at calc(8% - var(--ambient-shift-x)) 78%,
-      color-mix(in srgb, var(--foreground) 2%, transparent),
-      transparent 42%
-    );
+    radial-gradient(ellipse at calc(90% + var(--ambient-shift-x)) 8%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 36%),
+    radial-gradient(ellipse at calc(8% - var(--ambient-shift-x)) 78%, color-mix(in srgb, var(--foreground) 2%, transparent), transparent 42%);
   background-repeat: repeat, repeat, no-repeat, no-repeat;
   background-size: 56px 56px, 56px 56px, 100% 100%, 100% 100%;
+  transition: background-color 450ms ease, color 350ms ease, border-color 350ms ease;
+  background-position:
+    calc(var(--ambient-shift-x) * 0.35) calc(var(--ambient-shift-y) * 0.35),
+    calc(var(--ambient-shift-x) * -0.35) calc(var(--ambient-shift-y) * -0.35),
+    calc(90% + var(--ambient-shift-x)) 8%,
+    calc(8% - var(--ambient-shift-x)) 78%;
 }
 
+/* =========================================
+   HERO SECTION (Mobile & Desktop optimized)
+   ========================================= */
 .hero-section {
   background-image:
     linear-gradient(color-mix(in srgb, var(--foreground) 2.2%, transparent) 1px, transparent 1px),
     linear-gradient(90deg, color-mix(in srgb, var(--foreground) 2.2%, transparent) 1px, transparent 1px),
-    radial-gradient(
-      ellipse at calc(82% + var(--ambient-shift-x)) 18%,
-      color-mix(in srgb, var(--accent) 4%, transparent),
-      transparent 42%
-    );
+    radial-gradient(ellipse at calc(82% + var(--ambient-shift-x)) 18%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 42%);
   background-size: 56px 56px, 56px 56px, 100% 100%;
   background-repeat: repeat, repeat, no-repeat;
   background-position: calc(50% + var(--ambient-shift-x)) calc(50% + var(--ambient-shift-y)), calc(50% + var(--ambient-shift-x)) calc(50% + var(--ambient-shift-y)), 0 0;
-  transition: background-color 450ms ease;
-  display: flex;
+   display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
   min-height: 100svh;
-  padding-top: max(7.5rem, calc(env(safe-area-inset-top) + 6.5rem));
+  position: relative;
+  overflow: hidden;
+  padding-top: 6rem;
 }
 
-/* === BACKGROUND TEXT STYLING === */
 .hero-wordmark-copy {
-  flex: none;
+  display: inline-block;
   margin: 0;
   font-family: var(--font-anton), Impact, sans-serif;
   font-weight: 900;
   opacity: 1 !important; 
+  white-space: nowrap;
 }
 
-/* Force Solid Black in Light Mode */
 :root:not([data-theme="dark"]) .hero-wordmark-copy {
   color: #000000 !important;
   -webkit-text-stroke: 0px transparent !important;
 }
 
-/* Force Solid White in Dark Mode */
 :root[data-theme="dark"] .hero-wordmark-copy {
   color: #ffffff !important;
   -webkit-text-stroke: 0px transparent !important;
 }
 
+/* =========================================
+   AMBIENT BACKGROUND & STARFIELD
+   ========================================= */
 .starfield-background {
   position: fixed;
   z-index: 1;
@@ -181,11 +190,7 @@ main > section:not(.hero-section) {
   inset: 0;
   content: "";
   opacity: 0.8;
-  background: radial-gradient(
-    circle 15rem at var(--pointer-x) var(--pointer-y),
-    color-mix(in srgb, var(--accent) 16%, transparent),
-    transparent 70%
-  );
+  background: radial-gradient(circle 15rem at var(--pointer-x) var(--pointer-y), color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%);
 }
 
 .ambient-orb {
@@ -276,12 +281,7 @@ main > section:not(.hero-section) {
   position: absolute;
   inset: 0;
   opacity: 0;
-  background: radial-gradient(
-    circle 17rem at var(--pointer-x) var(--pointer-y),
-    color-mix(in srgb, var(--accent) 15%, transparent),
-    color-mix(in srgb, var(--foreground) 4%, transparent) 38%,
-    transparent 72%
-  );
+  background: radial-gradient(circle 17rem at var(--pointer-x) var(--pointer-y), color-mix(in srgb, var(--accent) 15%, transparent), color-mix(in srgb, var(--foreground) 4%, transparent) 38%, transparent 72%);
   transition: opacity 450ms ease;
 }
 
@@ -296,26 +296,9 @@ main > section:not(.hero-section) {
   animation-play-state: paused !important;
 }
 
-main > section:not(.hero-section) {
-  transition: background-color 450ms ease, color 350ms ease, border-color 350ms ease;
-}
-
-main > section:not(.hero-section) {
-  background-position:
-    calc(var(--ambient-shift-x) * 0.35) calc(var(--ambient-shift-y) * 0.35),
-    calc(var(--ambient-shift-x) * -0.35) calc(var(--ambient-shift-y) * -0.35),
-    calc(90% + var(--ambient-shift-x)) 8%,
-    calc(8% - var(--ambient-shift-x)) 78%;
-}
-
-main > section:nth-of-type(3n + 2):not(.hero-section) {
-  background-position:
-    calc(var(--ambient-shift-x) * -0.3) calc(var(--ambient-shift-y) * 0.3),
-    calc(var(--ambient-shift-x) * 0.3) calc(var(--ambient-shift-y) * -0.3),
-    calc(12% - var(--ambient-shift-x)) 5%,
-    calc(86% + var(--ambient-shift-x)) 88%;
-}
-
+/* =========================================
+   DARK MODE OVERRIDES
+   ========================================= */
 :root[data-theme="dark"] .bg-white,
 :root[data-theme="dark"] [class~="bg-white"] {
   background-color: var(--surface) !important;
@@ -348,10 +331,6 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   background-color: #232329 !important;
 }
 
-:root[data-theme="dark"] [class*="bg-[#e5e5e5]"] {
-  background-color: color-mix(in srgb, #17171b 88%, transparent) !important;
-}
-
 :root[data-theme="dark"] .text-black,
 :root[data-theme="dark"] [class~="text-black"] {
   color: #f5f5f6 !important;
@@ -379,44 +358,8 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   border-color: var(--border) !important;
 }
 
-:root[data-theme="dark"] [class~="divide-gray-200"] > :not(:last-child) {
-  border-color: var(--border) !important;
-}
-
 :root[data-theme="dark"] .hero-section {
   background-color: var(--background) !important;
-}
-
-:root[data-theme="dark"] .nav-brand,
-:root[data-theme="dark"] .menu-toggle {
-  color: var(--foreground);
-}
-
-:root[data-theme="dark"] .nav-shell,
-:root[data-theme="dark"] .mobile-menu {
-  background-color: color-mix(in srgb, #19191d 90%, transparent);
-  border-color: #34343b;
-}
-
-:root[data-theme="dark"] .nav-link {
-  color: #c7c7ce;
-}
-
-:root[data-theme="dark"] .nav-link:hover,
-:root[data-theme="dark"] .mobile-menu-link:hover {
-  background: #29292f;
-  color: #fff;
-}
-
-:root[data-theme="dark"] .menu-toggle,
-:root[data-theme="dark"] .theme-toggle {
-  border-color: var(--border);
-  background-color: #222228;
-}
-
-:root[data-theme="dark"] .mobile-menu-footer {
-  border-color: var(--border);
-  color: var(--foreground);
 }
 
 :root[data-theme="dark"] input,
@@ -431,14 +374,9 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   color: #92929c;
 }
 
-.hero-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-items: center;
-  justify-items: center;
-  gap: clamp(0.75rem, 2vw, 1.5rem);
-}
-
+/* =========================================
+   NAVIGATION & UTILITIES
+   ========================================= */
 .cursor {
   width: 13px;
   height: 13px;
@@ -454,12 +392,10 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   transform: translate3d(-50%, -50%, 0);
   box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 20%, transparent);
   transition: width 180ms ease, height 180ms ease, opacity 180ms ease, background-color 180ms ease;
+  will-change: transform;
 }
 
-.cursor[data-visible="true"] {
-  opacity: 1;
-}
-
+.cursor[data-visible="true"] { opacity: 1; }
 .cursor.hovered {
   width: 30px;
   height: 30px;
@@ -470,7 +406,6 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
 @media (hover: hover) and (pointer: fine) {
   body, a, button { cursor: none; }
 }
-
 @media (hover: none), (pointer: coarse) {
   .cursor { display: none; }
 }
@@ -518,13 +453,8 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   transition: transform 200ms ease;
 }
 
-.nav-link:hover {
-  color: var(--foreground);
-}
-
-.nav-link:hover::after {
-  transform: scaleX(1);
-}
+.nav-link:hover { color: var(--foreground); }
+.nav-link:hover::after { transform: scaleX(1); }
 
 .nav-cta {
   background: #111114;
@@ -575,57 +505,18 @@ main > section:nth-of-type(3n + 2):not(.hero-section) {
   stroke-width: 1.7;
 }
 
-.theme-toggle--compact {
-  min-height: 2.5rem;
-  padding-inline: 0.9rem;
-  font-size: 0.8rem;
-}
-
 .menu-icon {
   display: grid;
   width: 1rem;
   gap: 4px;
 }
-
 .menu-icon span {
   height: 1px;
   background: currentColor;
   transition: transform 180ms ease;
 }
-
-.menu-icon--open span:first-child {
-  transform: translateY(2.5px) rotate(45deg);
-}
-
-.menu-icon--open span:last-child {
-  transform: translateY(-2.5px) rotate(-45deg);
-}
-
-.mobile-menu {
-  border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
-  color: var(--foreground);
-  box-shadow: 0 20px 60px rgb(17 17 17 / 14%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.mobile-menu-link {
-  color: var(--foreground);
-  text-decoration: none;
-  transition: background-color 180ms ease, color 180ms ease, padding 180ms ease;
-}
-
-.mobile-menu-link:hover {
-  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
-  color: var(--accent);
-  padding-left: 1.1rem;
-}
-
-.mobile-menu-footer {
-  border-color: var(--border);
-  color: var(--foreground);
-}
+.menu-icon--open span:first-child { transform: translateY(2.5px) rotate(45deg); }
+.menu-icon--open span:last-child { transform: translateY(-2.5px) rotate(-45deg); }
 
 [data-magnetic] {
   transition: translate 220ms cubic-bezier(0.2, 0.7, 0.2, 1), background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
@@ -637,6 +528,9 @@ a:focus-visible {
   outline-offset: 4px;
 }
 
+/* =========================================
+   KEYFRAMES
+   ========================================= */
 @keyframes ambient-drift {
   from { transform: translateY(-0.5rem); }
   to { transform: translateY(1.5rem); }
@@ -652,48 +546,13 @@ a:focus-visible {
 }
 
 @keyframes global-grid-drift {
-  from {
-    background-position: 0 0, 0 0, 0 0, 0 0;
-  }
-  to {
-    background-position: 18px 12px, -14px 8px, 0 0, 0 0;
-  }
-}
-
-@media (max-width: 767px) {
-  .ambient-grid {
-    opacity: 0.18;
-    background-size: 44px 44px;
-  }
-
-  .ambient-orb--large {
-    right: -12rem;
-  }
-
-  .ambient-line {
-    width: 10rem;
-  }
-
-  html {
-    scroll-padding-top: 5rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+  from { background-position: 0 0, 0 0, 0 0, 0 0; }
+  to { background-position: 18px 12px, -14px 8px, 0 0, 0 0; }
 }
 
 /* =========================================
-   FONTS APPLIED TO ALL SECTIONS
+   FONTS & TYPOGRAPHY
    ========================================= */
-
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-playfair), serif;
   font-weight: 700;
@@ -723,9 +582,7 @@ p {
   background-color: rgb(17 17 20 / 72%) !important;
 }
 
-#contact .contact-description {
-  color: #d1d5db;
-}
+#contact .contact-description { color: #d1d5db; }
 
 :root body > div > footer[class~="bg-black"] {
   background-color: rgb(9 9 11 / 75%) !important;
@@ -735,38 +592,61 @@ p {
   background-color: rgb(9 9 11 / 75%) !important;
 }
 
-/* =========================================
-   ABOUT & JOURNEY SECTION FIXES
-   ========================================= */
-
 main > section#about {
   background-image: none !important;
   background-color: transparent !important;
 }
 
-@media (min-width: 768px) {
-  main > section#about .relative > .hidden.md\:block.absolute.left-1\/2 {
-    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 20%, transparent);
+/* =========================================
+   MOBILE RESPONSIVENESS & LAG FIXES
+   ========================================= */
+@media (max-width: 767px) {
+  /* Hide the heaviest graphics on mobile to stop lag */
+  .ambient-orb--large { display: none; }
+  .ambient-line { display: none; }
+  .ambient-particles span { display: none; }
+  .ambient-grid { opacity: 0.15; background-size: 40px 40px; }
+  
+  html { scroll-padding-top: 5rem; }
+  
+  .hero-section {
+    min-height: 100svh;
+    padding-top: max(7rem, calc(env(safe-area-inset-top) + 6rem));
+  }
+  
+  .hero-wordmark-copy {
+    font-size: 22vw !important; /* Scales the moving name perfectly on small screens */
+    opacity: 0.8;
+  }
+
+  /* Force Timeline (About section) to single column */
+  main > section#about .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  
+  main > section#about .grid-cols-2 > div {
+    padding-bottom: 2rem;
+  }
+  
+  main > section#about .grid-cols-2 > div .absolute {
+    display: none !important; /* Hide timeline dots on mobile */
   }
 }
 
-main > section#about .space-y-8 > div {
-  min-height: 100px;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .starfield-background::before {
-    animation: none;
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    /* Remove the animation-duration lines below if you want the intro to always play */
+    /* animation-duration: 0.01ms !important; */
+    /* animation-iteration-count: 1 !important; */
+    transition-duration: 0.01ms !important;
   }
 }
 
 /* Custom Scrollbar for the Timeline */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: color-mix(in srgb, var(--foreground) 20%, transparent);
   border-radius: 10px;
@@ -776,21 +656,24 @@ main > section#about .space-y-8 > div {
   scrollbar-color: color-mix(in srgb, var(--foreground) 20%, transparent) transparent;
 }
 
-html {
-  overflow-x: clip;
-  scrollbar-width: none;
-  /* Keep this at 8rem! */
-  scroll-padding-top: 8rem; 
-}
-
-/* Force hardware acceleration for smooth opening animations */
+/* Hardware Acceleration */
 .transform-gpu {
   transform: translateZ(0);
   backface-visibility: hidden;
 }
 
-/* Make sure the Hero background section doesn't lag */
-.hero-section {
-  transform: translateZ(0);
+/* Force GPU acceleration for the moving text and masks */
+.hero-wordmark-copy {
   will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.hero-picture-wrapper {
+  will-change: opacity, transform;
+  transform: translateZ(0);
+}
+
+.hero-mask-layer {
+  will-change: opacity, mask-image, -webkit-mask-image;
 }

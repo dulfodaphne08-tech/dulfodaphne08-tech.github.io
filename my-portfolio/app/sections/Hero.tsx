@@ -1,27 +1,41 @@
 "use client";
-import { motion, useMotionTemplate, useSpring } from "framer-motion";
 import { useState, useEffect, useRef, PointerEvent } from "react";
 
 export default function Hero() {
   const pictureSrc = "/picture.png";
   const containerRef = useRef<HTMLDivElement>(null);
+  const maskRef = useRef<HTMLDivElement>(null);
   const touchTimer = useRef<number | null>(null);
+  
+  const [introFinished, setIntroFinished] = useState(false);
 
-  const pointerX = useSpring(0, { stiffness: 120, damping: 20, mass: 0.35 });
-  const pointerY = useSpring(0, { stiffness: 120, damping: 20, mass: 0.35 });
-  const revealSize = useSpring(180, { stiffness: 140, damping: 22, mass: 0.4 });
-  const [colorActive, setColorActive] = useState(false);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    
+    const handleIntroComplete = () => setIntroFinished(true);
+    window.addEventListener("introComplete", handleIntroComplete);
 
-  const maskImage = useMotionTemplate`radial-gradient(circle ${revealSize}px at ${pointerX}px ${pointerY}px, black 0%, black 65%, transparent 100%)`;
+    return () => {
+      window.removeEventListener("introComplete", handleIntroComplete);
+      if (touchTimer.current !== null) window.clearTimeout(touchTimer.current);
+    };
+  }, []);
 
-  const setColorReveal = (active: boolean) => setColorActive(active);
+  const setColorReveal = (active: boolean) => {
+    if (maskRef.current) {
+      maskRef.current.style.opacity = active ? "1" : "0";
+    }
+  };
 
   const updatePointer = (e: PointerEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !maskRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    pointerX.set(e.clientX - rect.left);
-    pointerY.set(e.clientY - rect.top);
-    revealSize.set(e.pointerType === "touch" ? 110 : 250);
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Direct DOM manipulation bypasses React's rendering cycle for zero lag
+    maskRef.current.style.setProperty('--p-x', `${x}px`);
+    maskRef.current.style.setProperty('--p-y', `${y}px`);
   };
 
   const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
@@ -44,40 +58,49 @@ export default function Hero() {
     }
   };
 
-  useEffect(() => {
-    // Force page to load at the very top
-    window.scrollTo(0, 0);
-    return () => {
-      if (touchTimer.current !== null) window.clearTimeout(touchTimer.current);
-    };
-  }, []);
-
   return (
-    // Added transform-gpu and will-change-transform to force smooth rendering
-    <section className="hero-section relative w-full h-[100svh] overflow-hidden bg-transparent flex flex-col justify-end items-center transform-gpu will-change-transform">
+    <section className="hero-section relative w-full min-h-[100svh] overflow-hidden bg-transparent flex flex-col justify-end items-center">
       
-      {/* BACKGROUND NAME */}
+      <style>{`
+        .marquee-wrapper {
+          display: flex;
+          width: max-content;
+          animation: 
+            slideInFast 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards,
+            infiniteScroll 25s linear 1.7s infinite;
+        }
+
+        @keyframes slideInFast {
+          0% { transform: translateX(100vw); }
+          100% { transform: translateX(0); }
+        }
+
+        @keyframes infiniteScroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
+
+      {/* 1. MOVING BACKGROUND NAME */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center">
-        <motion.div
-          animate={{ x: ["0%", "-15%", "-50%"] }}
-          transition={{ duration: 50, ease: "linear", times: [0, 0.02, 1] }}
-          className="flex whitespace-nowrap will-change-transform transform-gpu"
-        >
-          {[0, 1, 2, 3].map((copy) => (
-            <h1
-              key={copy}
-              className="hero-wordmark-copy text-[20vw] md:text-[18vw] font-black uppercase tracking-[-0.04em] leading-none select-none text-black dark:text-white pr-10 md:pr-20"
-              aria-hidden="true"
-            >
-              DAPHNE DULFO
-            </h1>
-          ))}
-        </motion.div>
+        {introFinished && (
+          <div className="marquee-wrapper will-change-transform">
+            {[0, 1, 2, 3, 4, 5, 6, 7].map((copy) => (
+              <h1
+                key={copy}
+                className="hero-wordmark-copy text-[30vw] md:text-[20vw] lg:text-[18vw] font-black uppercase tracking-[-0.04em] leading-none select-none text-black dark:text-white pr-6 md:pr-12"
+                aria-hidden="true"
+              >
+                DAPHNE DULFO
+              </h1>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* PICTURE */}
-      <div className="relative z-10 w-full flex justify-center items-end mt-auto pb-0 md:pb-0">
-        <motion.div
+      {/* 2. PICTURE OVERLAY */}
+      <div className="relative z-10 w-full flex justify-center items-end mt-auto">
+        <div
           ref={containerRef}
           onPointerMove={handlePointerMove}
           onPointerDown={handlePointerDown}
@@ -86,10 +109,7 @@ export default function Hero() {
           onPointerLeave={(e) => {
             if (e.pointerType === "mouse") setColorReveal(false);
           }}
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 60, damping: 14, mass: 1, delay: 0.1 }}
-          className="relative w-full md:w-[72vw] max-w-none md:max-w-[860px] h-[75svh] md:h-[85vh] cursor-crosshair touch-pan-y will-change-transform transform-gpu"
+          className={`hero-picture-wrapper relative w-full sm:w-[85vw] md:w-[72vw] max-w-none md:max-w-[860px] h-[60svh] sm:h-[70svh] md:h-[85vh] cursor-crosshair touch-pan-y transition-all duration-1000 ${introFinished ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
         >
           <img
             src={pictureSrc}
@@ -98,32 +118,37 @@ export default function Hero() {
             draggable={false}
           />
 
-          <motion.div
-            className="pointer-events-none absolute inset-0 z-20"
-            animate={{ opacity: colorActive ? 1 : 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+          {/* Color Reveal Mask - Updates outside of React's render cycle */}
+          <div
+            ref={maskRef}
+            className="hero-mask-layer pointer-events-none absolute inset-0 z-20 transition-opacity duration-300 ease-out opacity-0"
             style={{
               backgroundImage: `url('${pictureSrc}')`,
               backgroundSize: "contain",
               backgroundPosition: "bottom center",
               backgroundRepeat: "no-repeat",
-              maskImage,
-              WebkitMaskImage: maskImage,
+              // Default to center if variables aren't set yet
+              maskImage: `radial-gradient(circle 250px at var(--p-x, 50%) var(--p-y, 50%), black 0%, black 65%, transparent 100%)`,
+              WebkitMaskImage: `radial-gradient(circle 250px at var(--p-x, 50%) var(--p-y, 50%), black 0%, black 65%, transparent 100%)`,
             }}
           />
-        </motion.div>
+        </div>
       </div>
 
-      {/* SCROLL INDICATOR */}
-      <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 pointer-events-none hidden md:flex flex-col items-center gap-4">
-        <span
-          className="text-[9px] font-bold tracking-[0.3em] uppercase text-black dark:text-white"
-          style={{ writingMode: "vertical-rl" }}
+      {/* 3. SCROLL INDICATOR */}
+      {introFinished && (
+        <div 
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 pointer-events-none hidden md:flex flex-col items-center gap-4 animate-[fadeIn_1s_ease-in_1s_forwards] opacity-0"
         >
-          Scroll Down
-        </span>
-        <div className="w-[1px] h-12 bg-black dark:bg-white" />
-      </div>
+          <span
+            className="text-[9px] font-bold tracking-[0.3em] uppercase text-black dark:text-white"
+            style={{ writingMode: "vertical-rl" }}
+          >
+            Scroll Down
+          </span>
+          <div className="w-[1px] h-12 bg-black dark:bg-white" />
+        </div>
+      )}
     </section>
   );
 }

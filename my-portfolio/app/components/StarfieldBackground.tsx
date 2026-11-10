@@ -39,18 +39,19 @@ export default function StarfieldBackground() {
     };
 
     const createParticles = () => {
-      const count = Math.min(90, Math.max(32, Math.round((width * height) / 14000)));
+      const area = width * height;
+      const count = Math.min(42, Math.max(18, Math.round(area / 45000)));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.22,
-        vy: (Math.random() - 0.5) * 0.22,
-        size: 1.2 + Math.random() * 1,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.18,
+        size: 1 + Math.random() * 0.8,
       }));
     };
 
     const resize = () => {
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1);
       width = window.innerWidth;
       height = window.innerHeight;
       canvas.width = Math.round(width * pixelRatio);
@@ -65,6 +66,8 @@ export default function StarfieldBackground() {
     const draw = (moveParticles: boolean) => {
       context.clearRect(0, 0, width, height);
 
+      const connectDist = 120;
+      const pointerDist = 170;
       for (let i = 0; i < particles.length; i += 1) {
         const particle = particles[i];
         if (moveParticles) {
@@ -78,30 +81,35 @@ export default function StarfieldBackground() {
           const other = particles[j];
           const dx = particle.x - other.x;
           const dy = particle.y - other.y;
+          if (dx > connectDist || dx < -connectDist || dy > connectDist || dy < -connectDist) continue;
           const distance = Math.hypot(dx, dy);
-          if (distance > 150) continue;
+          if (distance > connectDist) continue;
 
           context.beginPath();
-          context.strokeStyle = `rgba(${lineColor}, ${(1 - distance / 150) * 0.3})`;
-          context.lineWidth = 0.8;
+          context.strokeStyle = `rgba(${lineColor}, ${(1 - distance / connectDist) * 0.22})`;
+          context.lineWidth = 0.7;
           context.moveTo(particle.x, particle.y);
           context.lineTo(other.x, other.y);
           context.stroke();
         }
 
-        const pointerDistance = Math.hypot(particle.x - pointerX, particle.y - pointerY);
-        if (pointerDistance < 210) {
-          context.beginPath();
-          context.strokeStyle = `rgba(${pointerColor}, ${(1 - pointerDistance / 210) * 0.44})`;
-          context.lineWidth = 1;
-          context.moveTo(particle.x, particle.y);
-          context.lineTo(pointerX, pointerY);
-          context.stroke();
+        const pdx = particle.x - pointerX;
+        const pdy = particle.y - pointerY;
+        if (pdx > -pointerDist && pdx < pointerDist && pdy > -pointerDist && pdy < pointerDist) {
+          const pointerDistance = Math.hypot(pdx, pdy);
+          if (pointerDistance < pointerDist) {
+            context.beginPath();
+            context.strokeStyle = `rgba(${pointerColor}, ${(1 - pointerDistance / pointerDist) * 0.35})`;
+            context.lineWidth = 0.9;
+            context.moveTo(particle.x, particle.y);
+            context.lineTo(pointerX, pointerY);
+            context.stroke();
+          }
         }
 
         context.beginPath();
         context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        context.fillStyle = `rgba(${dotColor}, 0.82)`;
+        context.fillStyle = `rgba(${dotColor}, 0.78)`;
         context.fill();
       }
     };
